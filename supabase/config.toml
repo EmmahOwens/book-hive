@@ -1,1 +1,10 @@
 project_id = "gkaaqbqzgdulzspdhupe"
+
+[functions.admin-check-password]
+verify_jwt = false
+
+[functions.send-email]
+verify_jwt = false
+
+[functions.daily-overdue-check]
+verify_jwt = false

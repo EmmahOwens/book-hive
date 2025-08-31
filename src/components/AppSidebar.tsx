@@ -1,0 +1,94 @@
+import { 
+  Book, 
+  Search, 
+  Heart, 
+  User,
+  Settings,
+  BarChart3,
+  Users,
+  BookOpen,
+  Clock,
+  AlertTriangle
+} from "lucide-react";
+import { NavLink, useLocation } from "react-router-dom";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  useSidebar,
+} from "@/components/ui/sidebar";
+
+const clientItems = [
+  { title: "Browse Books", url: "/", icon: Search },
+  { title: "My Requests", url: "/my-requests", icon: BookOpen },
+  { title: "Favorites", url: "/favorites", icon: Heart },
+  { title: "Profile", url: "/profile", icon: User },
+];
+
+const adminItems = [
+  { title: "Dashboard", url: "/admin", icon: BarChart3 },
+  { title: "Requests", url: "/admin/requests", icon: Users },
+  { title: "Active Loans", url: "/admin/loans", icon: BookOpen },
+  { title: "Overdue Items", url: "/admin/overdue", icon: Clock },
+  { title: "Inventory", url: "/admin/inventory", icon: Book },
+  { title: "Activity Log", url: "/admin/activity", icon: AlertTriangle },
+  { title: "Settings", url: "/admin/settings", icon: Settings },
+];
+
+export function AppSidebar() {
+  const { open } = useSidebar();
+  const location = useLocation();
+  const currentPath = location.pathname;
+  const isAdminSection = currentPath.includes('/admin');
+
+  const items = isAdminSection ? adminItems : clientItems;
+  const isActive = (path: string) => currentPath === path || (path === "/" && currentPath === "/");
+
+  const getNavClassName = ({ isActive }: { isActive: boolean }) =>
+    isActive 
+      ? "bg-gradient-primary text-primary-foreground shadow-neumorphic font-medium" 
+      : "hover:bg-secondary/80 hover:shadow-neumorphic-inset transition-all duration-200";
+
+  return (
+    <Sidebar
+      className={`${!open ? "w-14" : "w-64"} border-r bg-card/30 backdrop-blur-md border-border/50`}
+      collapsible="icon"
+    >
+      <SidebarContent className="p-4">
+        <SidebarGroup>
+          <SidebarGroupLabel className={`${!open ? "hidden" : "block"} text-muted-foreground font-medium mb-2`}>
+            {isAdminSection ? "Administration" : "Library Portal"}
+          </SidebarGroupLabel>
+          
+          <SidebarGroupContent>
+            <SidebarMenu className="space-y-2">
+              {items.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton asChild>
+                    <NavLink 
+                      to={item.url} 
+                      className={getNavClassName}
+                      end={item.url === '/'}
+                    >
+                      <div className="flex items-center gap-3 p-2 rounded-xl">
+                        <item.icon className="w-5 h-5 flex-shrink-0" />
+                        {open && (
+                          <span className="font-medium">{item.title}</span>
+                        )}
+                      </div>
+                    </NavLink>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+    </Sidebar>
+  );
+}
