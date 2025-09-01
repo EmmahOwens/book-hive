@@ -14,13 +14,405 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      activity_log: {
+        Row: {
+          action: string
+          actor: string
+          created_at: string | null
+          details: Json | null
+          entity_id: string | null
+          entity_type: string | null
+          id: string
+          ip_address: unknown | null
+          user_agent: string | null
+        }
+        Insert: {
+          action: string
+          actor: string
+          created_at?: string | null
+          details?: Json | null
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: string
+          ip_address?: unknown | null
+          user_agent?: string | null
+        }
+        Update: {
+          action?: string
+          actor?: string
+          created_at?: string | null
+          details?: Json | null
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: string
+          ip_address?: unknown | null
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
+      book_categories: {
+        Row: {
+          book_id: string
+          category_id: string
+          created_at: string | null
+          id: string
+        }
+        Insert: {
+          book_id: string
+          category_id: string
+          created_at?: string | null
+          id?: string
+        }
+        Update: {
+          book_id?: string
+          category_id?: string
+          created_at?: string | null
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "book_categories_book_id_fkey"
+            columns: ["book_id"]
+            isOneToOne: false
+            referencedRelation: "books"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "book_categories_book_id_fkey"
+            columns: ["book_id"]
+            isOneToOne: false
+            referencedRelation: "books_realtime_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "book_categories_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      books: {
+        Row: {
+          authors: string[]
+          cover_path: string | null
+          created_at: string | null
+          description: string | null
+          edition: string | null
+          id: string
+          isbn: string | null
+          language: string | null
+          level_id: string | null
+          publication_year: number | null
+          publisher: string | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          authors?: string[]
+          cover_path?: string | null
+          created_at?: string | null
+          description?: string | null
+          edition?: string | null
+          id?: string
+          isbn?: string | null
+          language?: string | null
+          level_id?: string | null
+          publication_year?: number | null
+          publisher?: string | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          authors?: string[]
+          cover_path?: string | null
+          created_at?: string | null
+          description?: string | null
+          edition?: string | null
+          id?: string
+          isbn?: string | null
+          language?: string | null
+          level_id?: string | null
+          publication_year?: number | null
+          publisher?: string | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "books_level_id_fkey"
+            columns: ["level_id"]
+            isOneToOne: false
+            referencedRelation: "levels"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      borrow_requests: {
+        Row: {
+          admin_notes: string | null
+          affiliation: string
+          approved_at: string | null
+          approved_by: string | null
+          created_at: string | null
+          desired_duration_days: number
+          email: string
+          id: string
+          id_number: string
+          membership_id: string | null
+          phone: string | null
+          pickup_location: string
+          purpose: string | null
+          requested_items: Json
+          requester_name: string
+          status: string
+          updated_at: string | null
+        }
+        Insert: {
+          admin_notes?: string | null
+          affiliation: string
+          approved_at?: string | null
+          approved_by?: string | null
+          created_at?: string | null
+          desired_duration_days?: number
+          email: string
+          id?: string
+          id_number: string
+          membership_id?: string | null
+          phone?: string | null
+          pickup_location: string
+          purpose?: string | null
+          requested_items?: Json
+          requester_name: string
+          status?: string
+          updated_at?: string | null
+        }
+        Update: {
+          admin_notes?: string | null
+          affiliation?: string
+          approved_at?: string | null
+          approved_by?: string | null
+          created_at?: string | null
+          desired_duration_days?: number
+          email?: string
+          id?: string
+          id_number?: string
+          membership_id?: string | null
+          phone?: string | null
+          pickup_location?: string
+          purpose?: string | null
+          requested_items?: Json
+          requester_name?: string
+          status?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      categories: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          id: string
+          name: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          name: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          name?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      copies: {
+        Row: {
+          acquisition_date: string | null
+          barcode: string
+          book_id: string
+          created_at: string | null
+          id: string
+          location: string | null
+          notes: string | null
+          status: string
+          updated_at: string | null
+        }
+        Insert: {
+          acquisition_date?: string | null
+          barcode: string
+          book_id: string
+          created_at?: string | null
+          id?: string
+          location?: string | null
+          notes?: string | null
+          status?: string
+          updated_at?: string | null
+        }
+        Update: {
+          acquisition_date?: string | null
+          barcode?: string
+          book_id?: string
+          created_at?: string | null
+          id?: string
+          location?: string | null
+          notes?: string | null
+          status?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "copies_book_id_fkey"
+            columns: ["book_id"]
+            isOneToOne: false
+            referencedRelation: "books"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "copies_book_id_fkey"
+            columns: ["book_id"]
+            isOneToOne: false
+            referencedRelation: "books_realtime_view"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      levels: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          id: string
+          name: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          name: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          name?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      loans: {
+        Row: {
+          borrow_request_id: string | null
+          borrower_email: string
+          borrower_name: string
+          borrower_phone: string | null
+          copy_id: string
+          created_at: string | null
+          due_date: string
+          id: string
+          issued_by: string
+          issued_date: string
+          late_fee: number | null
+          notes: string | null
+          renewal_count: number | null
+          returned_date: string | null
+          returned_to: string | null
+          status: string
+          updated_at: string | null
+        }
+        Insert: {
+          borrow_request_id?: string | null
+          borrower_email: string
+          borrower_name: string
+          borrower_phone?: string | null
+          copy_id: string
+          created_at?: string | null
+          due_date: string
+          id?: string
+          issued_by: string
+          issued_date?: string
+          late_fee?: number | null
+          notes?: string | null
+          renewal_count?: number | null
+          returned_date?: string | null
+          returned_to?: string | null
+          status?: string
+          updated_at?: string | null
+        }
+        Update: {
+          borrow_request_id?: string | null
+          borrower_email?: string
+          borrower_name?: string
+          borrower_phone?: string | null
+          copy_id?: string
+          created_at?: string | null
+          due_date?: string
+          id?: string
+          issued_by?: string
+          issued_date?: string
+          late_fee?: number | null
+          notes?: string | null
+          renewal_count?: number | null
+          returned_date?: string | null
+          returned_to?: string | null
+          status?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "loans_borrow_request_id_fkey"
+            columns: ["borrow_request_id"]
+            isOneToOne: false
+            referencedRelation: "borrow_requests"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "loans_copy_id_fkey"
+            columns: ["copy_id"]
+            isOneToOne: false
+            referencedRelation: "copies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
-      [_ in never]: never
+      books_realtime_view: {
+        Row: {
+          authors: string[] | null
+          available_count: number | null
+          categories: string[] | null
+          cover_path: string | null
+          created_at: string | null
+          description: string | null
+          id: string | null
+          level: string | null
+          title: string | null
+          total_copies: number | null
+          updated_at: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
-      [_ in never]: never
+      queue_notification: {
+        Args: {
+          email_content: string
+          email_subject: string
+          email_to: string
+          notification_type: string
+          payload_data?: Json
+        }
+        Returns: Json
+      }
     }
     Enums: {
       [_ in never]: never
