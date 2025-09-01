@@ -88,11 +88,11 @@ export default function AdminDashboard() {
     try {
       // Fetch dashboard statistics
       const [booksResult, copiesResult, loansResult, requestsResult, overdueResult] = await Promise.all([
-        supabase.from('books').select('*', { count: 'exact' }),
-        supabase.from('copies').select('*', { count: 'exact' }),
-        supabase.from('loans').select('*', { count: 'exact' }).eq('status', 'active'),
-        supabase.from('borrow_requests').select('*', { count: 'exact' }).eq('status', 'pending'),
-        supabase.from('loans').select('*', { count: 'exact' }).eq('status', 'overdue'),
+        (supabase as any).from('books').select('*', { count: 'exact' }),
+        (supabase as any).from('copies').select('*', { count: 'exact' }),
+        (supabase as any).from('loans').select('*', { count: 'exact' }).eq('status', 'active'),
+        (supabase as any).from('borrow_requests').select('*', { count: 'exact' }).eq('status', 'pending'),
+        (supabase as any).from('loans').select('*', { count: 'exact' }).eq('status', 'overdue'),
       ]);
 
       setStats({
@@ -115,7 +115,7 @@ export default function AdminDashboard() {
 
   const fetchRecentActivity = async () => {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('activity_log')
         .select('*')
         .order('created_at', { ascending: false })

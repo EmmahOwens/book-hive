@@ -53,7 +53,7 @@ const Index = () => {
   const fetchBooks = async () => {
     try {
       setLoading(true);
-      let query = supabase.from('books_realtime_view').select('*');
+      let query = (supabase as any).from('books_realtime_view').select('*');
 
       // Apply search filter
       if (debouncedSearchQuery) {
@@ -127,7 +127,7 @@ const Index = () => {
 
   const handleBorrowSubmit = async (borrowData: any) => {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('borrow_requests')
         .insert([{
           requester_name: borrowData.requesterName,
@@ -148,26 +148,28 @@ const Index = () => {
         throw error;
       }
 
-      // Queue notification email
-      await supabase.rpc('queue_notification', {
-        notification_type: 'email',
-        email_to: borrowData.email,
-        email_subject: 'Borrow Request Submitted - Book Hive Library',
-        email_content: `
-          <h2>Borrow Request Submitted</h2>
-          <p>Dear ${borrowData.requesterName},</p>
-          <p>Your request to borrow "${selectedBook?.title}" has been successfully submitted.</p>
-          <p>Request details:</p>
-          <ul>
-            <li>Book: ${selectedBook?.title}</li>
-            <li>Duration: ${borrowData.desiredDurationDays} days</li>
-            <li>Pickup Location: ${borrowData.pickupLocation}</li>
-          </ul>
-          <p>You will receive another email once your request has been reviewed by our staff.</p>
-          <p>Best regards,<br>Book Hive Library Team</p>
-        `,
-        payload_data: { book_id: borrowData.bookId, request_id: data?.[0]?.id }
-      });
+      // Queue notification email only if we have data
+      if (data && data[0]) {
+        await (supabase as any).rpc('queue_notification', {
+          notification_type: 'email',
+          email_to: borrowData.email,
+          email_subject: 'Borrow Request Submitted - Book Hive Library',
+          email_content: `
+            <h2>Borrow Request Submitted</h2>
+            <p>Dear ${borrowData.requesterName},</p>
+            <p>Your request to borrow "${selectedBook?.title}" has been successfully submitted.</p>
+            <p>Request details:</p>
+            <ul>
+              <li>Book: ${selectedBook?.title}</li>
+              <li>Duration: ${borrowData.desiredDurationDays} days</li>
+              <li>Pickup Location: ${borrowData.pickupLocation}</li>
+            </ul>
+            <p>You will receive another email once your request has been reviewed by our staff.</p>
+            <p>Best regards,<br>Book Hive Library Team</p>
+          `,
+          payload_data: { book_id: borrowData.bookId, request_id: data[0].id }
+        });
+      }
 
       setShowBorrowModal(false);
       setSelectedBook(null);
