@@ -187,77 +187,125 @@ const Index = () => {
   return (
     <BookHiveLayout>
       <div className="container mx-auto px-6 py-8">
-        {/* Header Section */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold mb-4 bg-gradient-primary bg-clip-text text-transparent">
-            Discover Your Next Great Read
-          </h1>
-          <p className="text-xl text-muted-foreground">
-            Browse our collection of academic and reference books
-          </p>
-        </div>
-
-        {/* Search Section */}
-        <div className="mb-8">
-          <SearchBar
-            value={searchQuery}
-            onChange={setSearchQuery}
-            filters={filters}
-            onFiltersChange={setFilters}
-          />
-        </div>
-
-        {/* Results Section */}
-        <div className="mb-6">
-          <div className="flex items-center justify-between">
-            <p className="text-muted-foreground">
-              {loading ? "Loading..." : `${books.length} books found`}
-            </p>
-            {(debouncedSearchQuery || filters.categories.length > 0 || filters.levels.length > 0 || filters.availability !== 'all') && (
-              <p className="text-sm text-muted-foreground">
-                Filtered results
+        {/* Apple-style Hero Section */}
+        <div className="relative overflow-hidden rounded-3xl mb-16">
+          {/* Background with gradient mesh */}
+          <div className="absolute inset-0 bg-gradient-hero opacity-90"></div>
+          <div className="absolute inset-0 bg-gradient-mesh"></div>
+          
+          {/* Content */}
+          <div className="relative z-10 text-center py-32 px-8">
+            <div className="animate-fade-in-up">
+              <h1 className="headline-large text-white mb-6 animate-scale-in">
+                Discover Your Next
+                <br />
+                <span className="bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
+                  Great Read
+                </span>
+              </h1>
+              <p className="body-large text-white/80 mb-8 max-w-2xl mx-auto animate-fade-in" style={{animationDelay: '0.2s'}}>
+                Explore our curated collection of academic and reference books with our modern, intuitive browsing experience
               </p>
-            )}
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in" style={{animationDelay: '0.4s'}}>
+                <button className="btn-primary hover-lift">
+                  Browse Collection
+                </button>
+                <button className="glass text-white px-6 py-3 rounded-full font-medium hover-lift">
+                  Learn More
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          {/* Floating elements for visual interest */}
+          <div className="absolute top-20 left-20 w-32 h-32 bg-white/10 rounded-full blur-xl animate-float"></div>
+          <div className="absolute bottom-20 right-20 w-40 h-40 bg-blue-300/10 rounded-full blur-xl animate-float" style={{animationDelay: '1s'}}></div>
+        </div>
+
+        {/* Search Section with Apple-style glass morphism */}
+        <div className="mb-12 relative">
+          <div className="glass rounded-3xl p-8 backdrop-blur-2xl">
+            <SearchBar
+              value={searchQuery}
+              onChange={setSearchQuery}
+              filters={filters}
+              onFiltersChange={setFilters}
+            />
           </div>
         </div>
 
-        {/* Books Grid */}
-        {loading ? (
-          <div className="flex items-center justify-center py-12">
-            <Loader2 className="w-8 h-8 animate-spin text-primary" />
-            <span className="ml-2 text-muted-foreground">Loading books...</span>
-          </div>
-        ) : books.length === 0 ? (
-          <div className="text-center py-12">
-            <BookOpen className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-xl font-semibold mb-2">No books found</h3>
-            <p className="text-muted-foreground">
-              {searchQuery || filters.categories.length > 0 || filters.levels.length > 0 
-                ? "Try adjusting your search criteria or filters"
-                : "No books are currently available in the library"
-              }
-            </p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {books.map((book) => (
-              <BookCard
-                key={book.id}
-                id={book.id}
-                title={book.title}
-                authors={book.authors}
-                level={book.level}
-                categories={book.categories}
-                availableCount={book.available_count}
-                totalCopies={book.total_copies}
-                coverPath={book.cover_path}
-                description={book.description}
-                onBorrow={handleBorrowBook}
-                onViewDetails={handleViewBookDetails}
-              />
-            ))}
-          </div>
-        )}
+        {/* Results Section - Removed as it's now integrated into the main section */}
+
+        {/* Apple-style Books Grid Section */}
+        <section className="relative">
+          {loading ? (
+            <div className="flex flex-col items-center justify-center py-24">
+              <div className="relative">
+                <div className="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+                <div className="absolute inset-0 w-16 h-16 border-4 border-transparent border-t-primary/60 rounded-full animate-spin" style={{animationDirection: 'reverse', animationDuration: '1s'}}></div>
+              </div>
+              <p className="mt-6 text-muted-foreground font-medium">Loading your books...</p>
+            </div>
+          ) : books.length === 0 ? (
+            <div className="text-center py-24">
+              <div className="relative inline-block mb-8">
+                <div className="w-24 h-24 bg-gradient-hero rounded-2xl flex items-center justify-center shadow-apple-lg">
+                  <BookOpen className="w-12 h-12 text-white" />
+                </div>
+                <div className="absolute -top-2 -right-2 w-6 h-6 bg-primary rounded-full animate-pulse"></div>
+              </div>
+              <h3 className="headline-medium text-2xl mb-4">No books found</h3>
+              <p className="body-large text-base max-w-md mx-auto">
+                {searchQuery || filters.categories.length > 0 || filters.levels.length > 0 
+                  ? "Try adjusting your search criteria or explore different categories"
+                  : "Our collection is being updated. Please check back soon for new additions"
+                }
+              </p>
+            </div>
+          ) : (
+            <div className="space-y-8">
+              {/* Results header with Apple-style typography */}
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="headline-medium text-3xl mb-2">
+                    Featured Books
+                  </h2>
+                  <p className="text-muted-foreground">
+                    {books.length} {books.length === 1 ? 'book' : 'books'} in our collection
+                  </p>
+                </div>
+              </div>
+              
+              {/* Staggered grid animation */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {books.map((book, index) => (
+                  <div 
+                    key={book.id}
+                    className="animate-fade-in-up"
+                    style={{ 
+                      animationDelay: `${index * 0.1}s`,
+                      animationFillMode: 'both'
+                    }}
+                  >
+                    <BookCard
+                      id={book.id}
+                      title={book.title}
+                      authors={book.authors}
+                      level={book.level}
+                      categories={book.categories}
+                      availableCount={book.available_count}
+                      totalCopies={book.total_copies}
+                      coverPath={book.cover_path}
+                      description={book.description}
+                      onBorrow={handleBorrowBook}
+                      onViewDetails={handleViewBookDetails}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </section>
 
         {/* Borrow Modal */}
         <BorrowModal
