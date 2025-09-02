@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { BookHiveLayout } from "@/components/BookHiveLayout";
 import { SearchBar } from "@/components/SearchBar";
 import { BookCard } from "@/components/BookCard";
 import { BorrowModal } from "@/components/BorrowModal";
@@ -7,7 +6,9 @@ import { useDebounce } from "@/hooks/useDebounce";
 import { useRealtimeSubscription } from "@/hooks/useRealtimeSubscription";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
-import { Loader2, BookOpen } from "lucide-react";
+import { Loader2, BookOpen, Book, User } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 interface Book {
   id: string;
@@ -27,7 +28,8 @@ interface SearchFilters {
   availability: 'all' | 'available' | 'unavailable';
 }
 
-const Index = () => {
+const ClientPortal = () => {
+  const navigate = useNavigate();
   const [books, setBooks] = useState<Book[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
@@ -148,29 +150,6 @@ const Index = () => {
         throw error;
       }
 
-      // Queue notification email only if we have data
-      if (data && data[0]) {
-        await (supabase as any).rpc('queue_notification', {
-          notification_type: 'email',
-          email_to: borrowData.email,
-          email_subject: 'Borrow Request Submitted - Book Hive',
-          email_content: `
-            <h2>Borrow Request Submitted</h2>
-            <p>Dear ${borrowData.requesterName},</p>
-            <p>Your request to borrow "${selectedBook?.title}" has been successfully submitted.</p>
-            <p>Request details:</p>
-            <ul>
-              <li>Book: ${selectedBook?.title}</li>
-              <li>Duration: ${borrowData.desiredDurationDays} days</li>
-              <li>Pickup Location: ${borrowData.pickupLocation}</li>
-            </ul>
-            <p>You will receive another email once your request has been reviewed by our staff.</p>
-            <p>Best regards,<br>Book Hive Team</p>
-          `,
-          payload_data: { book_id: borrowData.bookId, request_id: data[0].id }
-        });
-      }
-
       setShowBorrowModal(false);
       setSelectedBook(null);
       
@@ -185,8 +164,36 @@ const Index = () => {
   };
 
   return (
-    <BookHiveLayout>
-      <div className="container mx-auto px-6 py-8">
+    <div className="min-h-screen bg-background">
+      {/* Client Header */}
+      <header className="h-16 flex items-center justify-between px-6 border-b bg-card/50 backdrop-blur-md border-border/50">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-gradient-primary flex items-center justify-center shadow-neumorphic">
+            <Book className="w-6 h-6 text-primary-foreground" />
+          </div>
+          <div>
+            <h1 className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+              Book Hive
+            </h1>
+            <p className="text-sm text-muted-foreground">
+              Discover & Borrow Books
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="shadow-neumorphic"
+            onClick={() => navigate('/')}
+          >
+            Back to Home
+          </Button>
+        </div>
+      </header>
+
+      <main className="container mx-auto px-6 py-8">
         {/* Apple-style Hero Section */}
         <div className="relative overflow-hidden rounded-3xl mb-16">
           {/* Background with gradient mesh */}
@@ -206,14 +213,6 @@ const Index = () => {
               <p className="body-large text-white/80 mb-8 max-w-2xl mx-auto animate-fade-in" style={{animationDelay: '0.2s'}}>
                 Explore our curated collection of academic and reference books with our modern, intuitive browsing experience
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in" style={{animationDelay: '0.4s'}}>
-                <button className="btn-primary hover-lift">
-                  Browse Collection
-                </button>
-                <button className="glass text-white px-6 py-3 rounded-full font-medium hover-lift">
-                  Learn More
-                </button>
-              </div>
             </div>
           </div>
           
@@ -233,8 +232,6 @@ const Index = () => {
             />
           </div>
         </div>
-
-        {/* Results Section - Removed as it's now integrated into the main section */}
 
         {/* Apple-style Books Grid Section */}
         <section className="relative">
@@ -322,9 +319,9 @@ const Index = () => {
           } : null}
           onSubmit={handleBorrowSubmit}
         />
-      </div>
-    </BookHiveLayout>
+      </main>
+    </div>
   );
 };
 
-export default Index;
+export default ClientPortal;

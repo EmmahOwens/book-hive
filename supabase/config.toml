@@ -6,5 +6,8 @@ verify_jwt = false
 [functions.send-email]
 verify_jwt = false
 
+[functions.send-loan-approval-email]
+verify_jwt = false
+
 [functions.daily-overdue-check]
 verify_jwt = false

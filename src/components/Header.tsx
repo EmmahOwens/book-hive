@@ -17,7 +17,7 @@ export function Header() {
           </div>
           <div>
             <h1 className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-              Book Hive Library
+              Book Hive
             </h1>
             <p className="text-sm text-muted-foreground">
               {isAdminRoute ? "Administrator Portal" : "Discover & Borrow Books"}

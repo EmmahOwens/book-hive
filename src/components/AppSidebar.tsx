@@ -76,9 +76,9 @@ export function AppSidebar() {
                       end={item.url === '/'}
                     >
                       <div className="flex items-center gap-3 p-2 rounded-xl">
-                        <item.icon className="w-5 h-5 flex-shrink-0 text-foreground" />
+                        <item.icon className="w-5 h-5 flex-shrink-0 text-black dark:text-white" />
                         {open && (
-                          <span className="font-medium">{item.title}</span>
+                          <span className="font-medium text-black dark:text-white">{item.title}</span>
                         )}
                       </div>
                     </NavLink>

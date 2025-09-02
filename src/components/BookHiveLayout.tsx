@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { useLocation } from "react-router-dom";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "./AppSidebar";
 import { Header } from "./Header";
@@ -9,7 +10,11 @@ interface BookHiveLayoutProps {
 }
 
 export function BookHiveLayout({ children, showSidebar = true }: BookHiveLayoutProps) {
-  if (!showSidebar) {
+  const location = useLocation();
+  const isClientRoute = location?.pathname.includes('/client');
+  
+  // Don't show sidebar for client routes
+  if (!showSidebar || isClientRoute) {
     return (
       <div className="min-h-screen bg-background">
         <Header />
