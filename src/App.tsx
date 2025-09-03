@@ -12,6 +12,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import AdminRequests from "./pages/AdminRequests";
 import AdminLoans from "./pages/AdminLoans";
 import AdminInventory from "./pages/AdminInventory";
+import BookDetails from "./pages/BookDetails";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -45,6 +46,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/client" element={<ClientPortal />} />
+            <Route path="/client/book/:bookId" element={<BookDetails />} />
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/requests" element={<AdminRequests />} />

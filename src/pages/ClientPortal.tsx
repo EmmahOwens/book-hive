@@ -123,8 +123,7 @@ const ClientPortal = () => {
   };
 
   const handleViewBookDetails = (bookId: string) => {
-    // TODO: Implement book details modal or page
-    console.log('View details for book:', bookId);
+    navigate(`/client/book/${bookId}`);
   };
 
   const handleBorrowSubmit = async (borrowData: any) => {
