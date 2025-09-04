@@ -16,8 +16,12 @@ export function Header({ showSidebarTrigger = false }: HeaderProps) {
       <div className="flex items-center gap-4">
         {showSidebarTrigger && <SidebarTrigger className="lg:hidden" />}
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-primary flex items-center justify-center shadow-neumorphic">
-            <Book className="w-6 h-6 text-primary-foreground" />
+          <div className="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-sm flex items-center justify-center shadow-neumorphic">
+            <img 
+              src="/lovable-uploads/edb17c97-cd98-4e14-8d30-629ad18e76b0.png" 
+              alt="Book Hive Logo" 
+              className="w-8 h-8 object-contain"
+            />
           </div>
           <div>
             <h1 className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">

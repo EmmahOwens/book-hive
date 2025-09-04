@@ -30,8 +30,12 @@ export function RoleSelectionModal({ isOpen, onClose }: RoleSelectionModalProps)
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md bg-card border">
         <DialogHeader className="text-center pb-6">
-          <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-apple-lg">
-            <Book className="w-8 h-8 text-white" />
+          <div className="w-16 h-16 bg-white/10 backdrop-blur-sm rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-apple-lg">
+            <img 
+              src="/lovable-uploads/edb17c97-cd98-4e14-8d30-629ad18e76b0.png" 
+              alt="Book Hive Logo" 
+              className="w-10 h-10 object-contain"
+            />
           </div>
           <DialogTitle className="text-2xl font-bold">
             Welcome to Book Hive

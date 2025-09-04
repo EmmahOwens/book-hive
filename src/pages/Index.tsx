@@ -196,6 +196,14 @@ const Index = () => {
           {/* Content */}
           <div className="relative z-10 text-center py-32 px-8">
             <div className="animate-fade-in-up">
+              {/* Logo */}
+              <div className="mb-8">
+                <img 
+                  src="/lovable-uploads/edb17c97-cd98-4e14-8d30-629ad18e76b0.png" 
+                  alt="Book Hive Logo" 
+                  className="w-20 h-20 mx-auto object-contain opacity-90"
+                />
+              </div>
               <h1 className="headline-large text-white mb-6 animate-scale-in">
                 Discover Your Next
                 <br />

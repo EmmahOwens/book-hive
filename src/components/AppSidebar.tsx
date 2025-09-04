@@ -60,6 +60,24 @@ export function AppSidebar() {
       collapsible="icon"
     >
       <SidebarContent className="p-4">
+        {/* Logo Section */}
+        {open && (
+          <div className="flex items-center gap-3 mb-6 px-2">
+            <div className="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-sm flex items-center justify-center shadow-neumorphic">
+              <img 
+                src="/lovable-uploads/edb17c97-cd98-4e14-8d30-629ad18e76b0.png" 
+                alt="Book Hive Logo" 
+                className="w-6 h-6 object-contain"
+              />
+            </div>
+            <div>
+              <h2 className="text-lg font-bold bg-gradient-primary bg-clip-text text-transparent">
+                Book Hive
+              </h2>
+            </div>
+          </div>
+        )}
+        
         <SidebarGroup>
           <SidebarGroupLabel className={`${!open ? "hidden" : "block"} text-muted-foreground font-medium mb-2`}>
             {isAdminSection ? "Administration" : "Library Portal"}
