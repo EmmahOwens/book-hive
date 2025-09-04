@@ -28,15 +28,15 @@ export function RoleSelectionModal({ isOpen, onClose }: RoleSelectionModalProps)
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md glass backdrop-blur-2xl border-0">
+      <DialogContent className="sm:max-w-md bg-card border">
         <DialogHeader className="text-center pb-6">
-          <div className="w-16 h-16 bg-gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-apple-lg">
+          <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-apple-lg">
             <Book className="w-8 h-8 text-white" />
           </div>
-          <DialogTitle className="headline-medium text-2xl">
+          <DialogTitle className="text-2xl font-bold">
             Welcome to Book Hive
           </DialogTitle>
-          <p className="body-large text-muted-foreground mt-2">
+          <p className="text-lg text-muted-foreground mt-2">
             Please select your role to continue
           </p>
         </DialogHeader>
@@ -44,7 +44,7 @@ export function RoleSelectionModal({ isOpen, onClose }: RoleSelectionModalProps)
         <div className="grid grid-cols-1 gap-4 py-4">
           <Button
             onClick={() => handleRoleSelection('client')}
-            className="h-20 flex flex-col gap-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white border-0 shadow-apple-lg hover-lift"
+            className="h-20 flex flex-col gap-2 bg-primary hover:bg-primary/90 text-white border-0 shadow-apple-lg transition-all duration-300 hover:scale-105 hover:-translate-y-1"
             size="lg"
           >
             <UserCheck className="w-6 h-6" />
@@ -56,7 +56,7 @@ export function RoleSelectionModal({ isOpen, onClose }: RoleSelectionModalProps)
           
           <Button
             onClick={() => handleRoleSelection('librarian')}
-            className="h-20 flex flex-col gap-2 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white border-0 shadow-apple-lg hover-lift"
+            className="h-20 flex flex-col gap-2 bg-secondary hover:bg-secondary/80 text-secondary-foreground border shadow-apple-lg transition-all duration-300 hover:scale-105 hover:-translate-y-1"
             size="lg"
           >
             <Book className="w-6 h-6" />
