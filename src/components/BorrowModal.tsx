@@ -129,7 +129,7 @@ export function BorrowModal({ isOpen, onClose, book, onSubmit }: BorrowModalProp
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto bg-gradient-glass backdrop-blur-md border-border/50">
+      <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto bg-card/95 backdrop-blur-xl border shadow-2xl">
         <DialogHeader>
           <DialogTitle className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
             Borrow Request
