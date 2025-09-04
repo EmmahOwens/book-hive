@@ -3,14 +3,18 @@ import { Button } from "@/components/ui/button";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useLocation } from "react-router-dom";
 
-export function Header() {
+interface HeaderProps {
+  showSidebarTrigger?: boolean;
+}
+
+export function Header({ showSidebarTrigger = false }: HeaderProps) {
   const location = useLocation();
   const isAdminRoute = location.pathname.includes('/admin');
 
   return (
     <header className="h-16 flex items-center justify-between px-6 border-b bg-card/50 backdrop-blur-md border-border/50">
       <div className="flex items-center gap-4">
-        <SidebarTrigger className="lg:hidden" />
+        {showSidebarTrigger && <SidebarTrigger className="lg:hidden" />}
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-gradient-primary flex items-center justify-center shadow-neumorphic">
             <Book className="w-6 h-6 text-primary-foreground" />
