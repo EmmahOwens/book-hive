@@ -38,11 +38,11 @@ const App = () => {
       <TooltipProvider>
         <Toaster />
         <Sonner />
-        <RoleSelectionModal 
-          isOpen={showRoleModal} 
-          onClose={handleRoleModalClose} 
-        />
         <BrowserRouter>
+          <RoleSelectionModal 
+            isOpen={showRoleModal} 
+            onClose={handleRoleModalClose} 
+          />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/client" element={<ClientPortal />} />
