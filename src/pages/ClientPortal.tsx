@@ -167,8 +167,12 @@ const ClientPortal = () => {
       {/* Client Header */}
       <header className="h-16 flex items-center justify-between px-6 border-b bg-card/50 backdrop-blur-md border-border/50">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-primary flex items-center justify-center shadow-neumorphic">
-            <Book className="w-6 h-6 text-primary-foreground" />
+          <div className="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-sm flex items-center justify-center shadow-neumorphic">
+            <img 
+              src="/lovable-uploads/edb17c97-cd98-4e14-8d30-629ad18e76b0.png" 
+              alt="Book Hive Logo" 
+              className="w-6 h-6 object-contain"
+            />
           </div>
           <div>
             <h1 className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
@@ -180,7 +184,16 @@ const ClientPortal = () => {
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="shadow-neumorphic"
+            onClick={() => navigate('/admin/login')}
+          >
+            <User className="w-4 h-4 mr-2" />
+            Librarian Login
+          </Button>
           <Button 
             variant="outline" 
             size="sm" 

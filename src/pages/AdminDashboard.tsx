@@ -232,7 +232,16 @@ export default function AdminDashboard() {
               Monitor and manage your library operations
             </p>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="shadow-neumorphic"
+              onClick={() => navigate('/client')}
+            >
+              <BookOpen className="w-4 h-4 mr-2" />
+              Client Portal
+            </Button>
             <Badge variant="outline" className="bg-success/10 text-success border-success/20">
               <div className="w-2 h-2 bg-success rounded-full mr-2 animate-pulse" />
               Live Updates Active
