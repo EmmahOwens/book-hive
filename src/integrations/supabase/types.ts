@@ -50,6 +50,30 @@ export type Database = {
         }
         Relationships: []
       }
+      admin_secrets: {
+        Row: {
+          created_at: string
+          id: string
+          key: string
+          updated_at: string
+          value_hash: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          key: string
+          updated_at?: string
+          value_hash: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          key?: string
+          updated_at?: string
+          value_hash?: string
+        }
+        Relationships: []
+      }
       book_categories: {
         Row: {
           book_id: string
