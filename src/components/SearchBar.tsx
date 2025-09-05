@@ -106,14 +106,14 @@ export function SearchBar({
       {/* Main Search Input */}
       <div className="relative">
         <div className={`
-          flex items-center bg-card/80 backdrop-blur-md rounded-2xl border-2 transition-all duration-300
+          flex items-center bg-card/80 backdrop-blur-md rounded-xl sm:rounded-2xl border-2 transition-all duration-300
           ${isFocused 
             ? 'border-primary shadow-glow' 
             : 'border-border/50 shadow-neumorphic'
           }
         `}>
-          <div className="pl-6 pr-3">
-            <Search className={`w-5 h-5 transition-colors ${isFocused ? 'text-primary' : 'text-muted-foreground'}`} />
+          <div className="pl-4 sm:pl-6 pr-3">
+            <Search className={`w-4 h-4 sm:w-5 sm:h-5 transition-colors ${isFocused ? 'text-primary' : 'text-muted-foreground'}`} />
           </div>
           
           <Input
@@ -123,7 +123,7 @@ export function SearchBar({
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
             placeholder={placeholder}
-            className="flex-1 border-0 bg-transparent text-lg py-6 px-0 focus-visible:ring-0 placeholder:text-muted-foreground"
+            className="flex-1 border-0 bg-transparent text-base sm:text-lg py-4 sm:py-6 px-0 focus-visible:ring-0 placeholder:text-muted-foreground"
           />
           
           {value && (
@@ -131,13 +131,13 @@ export function SearchBar({
               variant="ghost"
               size="sm"
               onClick={clearSearch}
-              className="mr-2 h-8 w-8 p-0 hover:bg-secondary/80"
+              className="mr-2 h-6 w-6 sm:h-8 sm:w-8 p-0 hover:bg-secondary/80"
             >
-              <X className="w-4 h-4" />
+              <X className="w-3 h-3 sm:w-4 sm:h-4" />
             </Button>
           )}
 
-          <div className="pr-4">
+          <div className="pr-3 sm:pr-4">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button 
@@ -149,7 +149,7 @@ export function SearchBar({
                   `}
                 >
                   <Filter className="w-4 h-4 mr-2" />
-                  Filters
+                  <span className="hidden sm:inline">Filters</span>
                   {activeFilterCount > 0 && (
                     <Badge className="ml-2 h-5 w-5 p-0 flex items-center justify-center bg-primary text-primary-foreground">
                       {activeFilterCount}
@@ -235,9 +235,9 @@ export function SearchBar({
           </div>
         </div>
 
-        {/* Search Hint */}
+        {/* Search Hint - hidden on mobile */}
         {!isFocused && !value && (
-          <div className="absolute right-6 top-1/2 transform -translate-y-1/2 text-sm text-muted-foreground">
+          <div className="absolute right-4 sm:right-6 top-1/2 transform -translate-y-1/2 text-xs sm:text-sm text-muted-foreground hidden md:block">
             Press <kbd className="px-2 py-1 bg-muted rounded text-xs">/</kbd> to focus
           </div>
         )}
@@ -245,45 +245,45 @@ export function SearchBar({
 
       {/* Active Filters Display */}
       {activeFilterCount > 0 && (
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-1 sm:gap-2">
           {filters.availability !== 'all' && (
-            <Badge variant="secondary" className="gap-1">
+            <Badge variant="secondary" className="gap-1 text-xs">
               {filters.availability === 'available' ? 'Available Now' : 'Unavailable'}
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-4 w-4 p-0 hover:bg-transparent"
+                className="h-3 w-3 sm:h-4 sm:w-4 p-0 hover:bg-transparent"
                 onClick={() => handleAvailabilityChange('all')}
               >
-                <X className="w-3 h-3" />
+                <X className="w-2 h-2 sm:w-3 sm:h-3" />
               </Button>
             </Badge>
           )}
           
           {filters.levels.map((level) => (
-            <Badge key={level} variant="secondary" className="gap-1">
+            <Badge key={level} variant="secondary" className="gap-1 text-xs">
               {level}
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-4 w-4 p-0 hover:bg-transparent"
+                className="h-3 w-3 sm:h-4 sm:w-4 p-0 hover:bg-transparent"
                 onClick={() => handleLevelChange(level, false)}
               >
-                <X className="w-3 h-3" />
+                <X className="w-2 h-2 sm:w-3 sm:h-3" />
               </Button>
             </Badge>
           ))}
           
           {filters.categories.map((category) => (
-            <Badge key={category} variant="secondary" className="gap-1">
+            <Badge key={category} variant="secondary" className="gap-1 text-xs">
               {category}
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-4 w-4 p-0 hover:bg-transparent"
+                className="h-3 w-3 sm:h-4 sm:w-4 p-0 hover:bg-transparent"
                 onClick={() => handleCategoryChange(category, false)}
               >
-                <X className="w-3 h-3" />
+                <X className="w-2 h-2 sm:w-3 sm:h-3" />
               </Button>
             </Badge>
           ))}

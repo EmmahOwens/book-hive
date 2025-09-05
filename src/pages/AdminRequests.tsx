@@ -94,11 +94,12 @@ export default function AdminRequests() {
       if (status === 'approved') {
         const { error: emailError } = await supabase.functions.invoke('send-loan-approval-email', {
           body: {
-            borrower_name: request.requester_name,
-            borrower_email: request.email,
-            book_titles: request.requested_items.map(item => item.title).join(', '),
-            due_date: new Date(Date.now() + request.desired_duration_days * 24 * 60 * 60 * 1000).toLocaleDateString(),
-            pickup_location: request.pickup_location
+            borrowRequestId: requestId,
+            borrowerName: request.requester_name,
+            borrowerEmail: request.email,
+            bookTitle: request.requested_items.map(item => item.title).join(', '),
+            dueDate: new Date(Date.now() + request.desired_duration_days * 24 * 60 * 60 * 1000).toLocaleDateString(),
+            pickupLocation: request.pickup_location
           }
         });
 
@@ -151,19 +152,19 @@ export default function AdminRequests() {
 
   return (
     <BookHiveLayout>
-      <div className="container mx-auto p-6 space-y-6">
-        <div className="flex items-center justify-between">
+      <div className="container mx-auto p-4 sm:p-6 space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+            <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-primary bg-clip-text text-transparent">
               Borrow Requests
             </h1>
-            <p className="text-muted-foreground">
+            <p className="text-muted-foreground text-sm sm:text-base">
               Manage and process library borrow requests
             </p>
           </div>
         </div>
 
-        <div className="grid gap-6">
+        <div className="grid gap-4 sm:gap-6">
           {requests.length === 0 ? (
             <Card className="bg-gradient-glass backdrop-blur-md border-border/50">
               <CardContent className="flex flex-col items-center justify-center py-12">
@@ -175,14 +176,14 @@ export default function AdminRequests() {
             requests.map((request) => (
               <Card key={request.id} className="bg-gradient-glass backdrop-blur-md border-border/50 shadow-glass hover:shadow-glow transition-all duration-300">
                 <CardHeader>
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-full bg-gradient-primary flex items-center justify-center">
-                        <User className="w-6 h-6 text-primary-foreground" />
+                      <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-primary flex items-center justify-center flex-shrink-0">
+                        <User className="w-5 h-5 sm:w-6 sm:h-6 text-primary-foreground" />
                       </div>
-                      <div>
-                        <CardTitle className="text-xl">{request.requester_name}</CardTitle>
-                        <CardDescription>{request.affiliation}</CardDescription>
+                      <div className="min-w-0">
+                        <CardTitle className="text-lg sm:text-xl truncate">{request.requester_name}</CardTitle>
+                        <CardDescription className="truncate">{request.affiliation}</CardDescription>
                       </div>
                     </div>
                     <Badge className={getStatusColor(request.status)}>
@@ -191,15 +192,15 @@ export default function AdminRequests() {
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="grid md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <div className="flex items-center gap-2 text-sm">
-                        <Mail className="w-4 h-4 text-primary" />
-                        <span>{request.email}</span>
+                        <Mail className="w-4 h-4 text-primary flex-shrink-0" />
+                        <span className="truncate">{request.email}</span>
                       </div>
                       {request.phone && (
                         <div className="flex items-center gap-2 text-sm">
-                          <Phone className="w-4 h-4 text-primary" />
+                          <Phone className="w-4 h-4 text-primary flex-shrink-0" />
                           <span>{request.phone}</span>
                         </div>
                       )}
@@ -248,8 +249,8 @@ export default function AdminRequests() {
                     </div>
                   )}
 
-                  <div className="flex gap-2 pt-4">
-                    <Button size="sm" className="flex items-center gap-2">
+                  <div className="flex flex-col sm:flex-row gap-2 pt-4">
+                    <Button size="sm" className="flex items-center justify-center gap-2 w-full sm:w-auto">
                       <Eye className="w-4 h-4" />
                       View Details
                     </Button>
@@ -258,7 +259,7 @@ export default function AdminRequests() {
                         <Button 
                           size="sm" 
                           variant="default" 
-                          className="flex items-center gap-2"
+                          className="flex items-center justify-center gap-2 w-full sm:w-auto"
                           onClick={() => handleRequestAction(request.id, 'approved', request)}
                         >
                           <CheckCircle className="w-4 h-4" />
@@ -267,7 +268,7 @@ export default function AdminRequests() {
                         <Button 
                           size="sm" 
                           variant="destructive" 
-                          className="flex items-center gap-2"
+                          className="flex items-center justify-center gap-2 w-full sm:w-auto"
                           onClick={() => handleRequestAction(request.id, 'rejected', request)}
                         >
                           <XCircle className="w-4 h-4" />

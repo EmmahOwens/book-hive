@@ -165,30 +165,30 @@ const ClientPortal = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Client Header */}
-      <header className="h-16 flex items-center justify-between px-6 border-b bg-card/50 backdrop-blur-md border-border/50">
+      <header className="h-16 flex items-center justify-between px-4 sm:px-6 border-b bg-card/50 backdrop-blur-md border-border/50">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-sm flex items-center justify-center shadow-neumorphic">
+          <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-white/10 backdrop-blur-sm flex items-center justify-center shadow-neumorphic">
             <img 
               src="/lovable-uploads/edb17c97-cd98-4e14-8d30-629ad18e76b0.png" 
               alt="Book Hive Logo" 
-              className="w-6 h-6 object-contain"
+              className="w-4 h-4 sm:w-6 sm:h-6 object-contain"
             />
           </div>
-          <div>
-            <h1 className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+          <div className="min-w-0">
+            <h1 className="text-lg sm:text-xl font-bold bg-gradient-primary bg-clip-text text-transparent truncate">
               Book Hive
             </h1>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block">
               Discover & Borrow Books
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <Button 
             variant="outline" 
             size="sm" 
-            className="shadow-neumorphic"
+            className="shadow-neumorphic hidden sm:flex"
             onClick={() => navigate('/admin/login')}
           >
             <User className="w-4 h-4 mr-2" />
@@ -197,45 +197,61 @@ const ClientPortal = () => {
           <Button 
             variant="outline" 
             size="sm" 
-            className="shadow-neumorphic"
+            className="shadow-neumorphic sm:hidden"
+            onClick={() => navigate('/admin/login')}
+          >
+            <User className="w-4 h-4" />
+          </Button>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="shadow-neumorphic hidden sm:flex"
             onClick={() => navigate('/')}
           >
             Back to Home
           </Button>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="shadow-neumorphic sm:hidden"
+            onClick={() => navigate('/')}
+          >
+            Home
+          </Button>
         </div>
       </header>
 
-      <main className="container mx-auto px-6 py-8">
+      <main className="container mx-auto px-4 sm:px-6 py-6 sm:py-8">
         {/* Apple-style Hero Section */}
-        <div className="relative overflow-hidden rounded-3xl mb-16">
+        <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl mb-12 sm:mb-16">
           {/* Background with gradient mesh */}
           <div className="absolute inset-0 bg-gradient-hero opacity-90"></div>
           <div className="absolute inset-0 bg-gradient-mesh"></div>
           
           {/* Content */}
-          <div className="relative z-10 text-center py-32 px-8">
+          <div className="relative z-10 text-center py-16 sm:py-24 lg:py-32 px-4 sm:px-8">
             <div className="animate-fade-in-up">
-              <h1 className="headline-large text-white mb-6 animate-scale-in">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-4 sm:mb-6 animate-scale-in leading-tight">
                 Discover Your Next
                 <br />
                 <span className="bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
                   Great Read
                 </span>
               </h1>
-              <p className="body-large text-white/80 mb-8 max-w-2xl mx-auto animate-fade-in" style={{animationDelay: '0.2s'}}>
+              <p className="text-base sm:text-lg lg:text-xl text-white/80 mb-6 sm:mb-8 max-w-2xl mx-auto animate-fade-in" style={{animationDelay: '0.2s'}}>
                 Explore our curated collection of academic and reference books with our modern, intuitive browsing experience
               </p>
             </div>
           </div>
           
-          {/* Floating elements for visual interest */}
-          <div className="absolute top-20 left-20 w-32 h-32 bg-white/10 rounded-full blur-xl animate-float"></div>
-          <div className="absolute bottom-20 right-20 w-40 h-40 bg-blue-300/10 rounded-full blur-xl animate-float" style={{animationDelay: '1s'}}></div>
+          {/* Floating elements for visual interest - hidden on mobile */}
+          <div className="absolute top-20 left-20 w-32 h-32 bg-white/10 rounded-full blur-xl animate-float hidden lg:block"></div>
+          <div className="absolute bottom-20 right-20 w-40 h-40 bg-blue-300/10 rounded-full blur-xl animate-float hidden lg:block" style={{animationDelay: '1s'}}></div>
         </div>
 
         {/* Search Section with Apple-style glass morphism */}
-        <div className="mb-12 relative">
-          <div className="glass rounded-3xl p-8 backdrop-blur-2xl">
+        <div className="mb-8 sm:mb-12 relative">
+          <div className="glass rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-8 backdrop-blur-2xl">
             <SearchBar
               value={searchQuery}
               onChange={setSearchQuery}
@@ -274,9 +290,9 @@ const ClientPortal = () => {
           ) : (
             <div className="space-y-8">
               {/* Results header with Apple-style typography */}
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                  <h2 className="headline-medium text-3xl mb-2">
+                  <h2 className="text-2xl sm:text-3xl font-bold mb-2">
                     Featured Books
                   </h2>
                   <p className="text-muted-foreground">
@@ -286,7 +302,7 @@ const ClientPortal = () => {
               </div>
               
               {/* Staggered grid animation */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-8">
                 {books.map((book, index) => (
                   <div 
                     key={book.id}

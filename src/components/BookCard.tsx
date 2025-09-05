@@ -57,54 +57,54 @@ export const BookCard = ({
         </div>
       )}
       
-      <CardHeader className="pb-3">
-        <CardTitle className="text-lg font-semibold leading-tight line-clamp-2 group-hover:text-primary transition-colors duration-300">
+      <CardHeader className="pb-2 sm:pb-3">
+        <CardTitle className="text-base sm:text-lg font-semibold leading-tight line-clamp-2 group-hover:text-primary transition-colors duration-300">
           {title}
         </CardTitle>
-        <CardDescription className="text-sm text-muted-foreground">
+        <CardDescription className="text-xs sm:text-sm text-muted-foreground">
           by {authors.join(", ")}
         </CardDescription>
       </CardHeader>
       
-      <CardContent className="pb-4">
+      <CardContent className="pb-3 sm:pb-4">
         {description && (
-          <p className="text-sm text-muted-foreground mb-4 line-clamp-3 leading-relaxed">
+          <p className="text-xs sm:text-sm text-muted-foreground mb-3 sm:mb-4 line-clamp-2 sm:line-clamp-3 leading-relaxed">
             {description}
           </p>
         )}
         
         {/* Tags with Apple-style styling */}
-        <div className="flex flex-wrap gap-2 mb-4">
-          <Badge className="bg-primary/10 text-primary border-primary/20 text-xs font-medium px-3 py-1 rounded-full">
+        <div className="flex flex-wrap gap-1 sm:gap-2 mb-3 sm:mb-4">
+          <Badge className="bg-primary/10 text-primary border-primary/20 text-xs font-medium px-2 sm:px-3 py-1 rounded-full">
             {level}
           </Badge>
           {categories.slice(0, 2).map((category) => (
-            <Badge key={category} variant="outline" className="text-xs font-medium px-3 py-1 rounded-full border-border/50 hover:border-primary/30 transition-colors">
+            <Badge key={category} variant="outline" className="text-xs font-medium px-2 sm:px-3 py-1 rounded-full border-border/50 hover:border-primary/30 transition-colors">
               {category}
             </Badge>
           ))}
           {categories.length > 2 && (
-            <Badge variant="outline" className="text-xs font-medium px-3 py-1 rounded-full border-border/50">
+            <Badge variant="outline" className="text-xs font-medium px-2 sm:px-3 py-1 rounded-full border-border/50">
               +{categories.length - 2}
             </Badge>
           )}
         </div>
         
         {/* Availability Info with Apple-style icons */}
-        <div className="flex items-center justify-between text-sm bg-muted/30 rounded-xl p-3">
-          <div className="flex items-center gap-2 text-muted-foreground">
-            <div className="w-8 h-8 rounded-lg bg-secondary/50 flex items-center justify-center">
-              <Users className="w-4 h-4" />
+        <div className="flex items-center justify-between text-xs sm:text-sm bg-muted/30 rounded-xl p-2 sm:p-3">
+          <div className="flex items-center gap-1 sm:gap-2 text-muted-foreground">
+            <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-secondary/50 flex items-center justify-center">
+              <Users className="w-3 h-3 sm:w-4 sm:h-4" />
             </div>
             <span className="font-medium">{totalCopies} copies</span>
           </div>
-          <div className={`flex items-center gap-2 font-semibold ${
+          <div className={`flex items-center gap-1 sm:gap-2 font-semibold ${
             isAvailable ? "text-success" : "text-destructive"
           }`}>
-            <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+            <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center ${
               isAvailable ? "bg-success/10" : "bg-destructive/10"
             }`}>
-              <BookOpen className="w-4 h-4" />
+              <BookOpen className="w-3 h-3 sm:w-4 sm:h-4" />
             </div>
             <span>
               {isAvailable ? `${availableCount} available` : "Not available"}
@@ -113,12 +113,12 @@ export const BookCard = ({
         </div>
       </CardContent>
       
-      <CardFooter className="pt-0 pb-6 gap-3">
+      <CardFooter className="pt-0 pb-4 sm:pb-6 gap-2 sm:gap-3">
         <Button
           variant="outline"
           size="sm"
           onClick={() => onViewDetails(id)}
-          className="flex-1 rounded-full border-border/50 hover:border-primary/30 hover:bg-primary/5 transition-all duration-300"
+          className="flex-1 rounded-full border-border/50 hover:border-primary/30 hover:bg-primary/5 transition-all duration-300 text-xs sm:text-sm"
         >
           Details
         </Button>
@@ -126,7 +126,7 @@ export const BookCard = ({
           onClick={() => onBorrow(id)}
           disabled={!isAvailable}
           size="sm"
-          className="flex-1 rounded-full bg-primary hover:bg-primary-dark disabled:opacity-50 disabled:cursor-not-allowed font-semibold transition-all duration-300 hover:scale-105 active:scale-95"
+          className="flex-1 rounded-full bg-primary hover:bg-primary-dark disabled:opacity-50 disabled:cursor-not-allowed font-semibold transition-all duration-300 hover:scale-105 active:scale-95 text-xs sm:text-sm"
         >
           {isAvailable ? "Borrow" : "Unavailable"}
         </Button>

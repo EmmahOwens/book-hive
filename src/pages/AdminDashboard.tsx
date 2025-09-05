@@ -221,18 +221,18 @@ export default function AdminDashboard() {
 
   return (
     <BookHiveLayout>
-      <div className="container mx-auto p-6 space-y-8">
+      <div className="container mx-auto p-4 sm:p-6 space-y-6">
         {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+            <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-primary bg-clip-text text-transparent">
               Library Dashboard
             </h1>
-            <p className="text-muted-foreground">
+            <p className="text-muted-foreground text-sm sm:text-base">
               Monitor and manage your library operations
             </p>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
             <Button 
               variant="outline" 
               size="sm" 
@@ -240,29 +240,31 @@ export default function AdminDashboard() {
               onClick={() => navigate('/client')}
             >
               <BookOpen className="w-4 h-4 mr-2" />
-              Client Portal
+              <span className="hidden sm:inline">Client Portal</span>
+              <span className="sm:hidden">Portal</span>
             </Button>
             <Badge variant="outline" className="bg-success/10 text-success border-success/20">
               <div className="w-2 h-2 bg-success rounded-full mr-2 animate-pulse" />
-              Live Updates Active
+              <span className="hidden sm:inline">Live Updates Active</span>
+              <span className="sm:hidden">Live</span>
             </Badge>
           </div>
         </div>
 
         {/* Statistics Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {statCards.map((stat) => (
             <Card key={stat.title} className="bg-gradient-secondary shadow-neumorphic border-0">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">
+                <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground">
                   {stat.title}
                 </CardTitle>
-                <div className={`w-10 h-10 rounded-xl ${stat.bgColor} flex items-center justify-center`}>
-                  <stat.icon className={`w-5 h-5 ${stat.color}`} />
+                <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-xl ${stat.bgColor} flex items-center justify-center`}>
+                  <stat.icon className={`w-4 h-4 sm:w-5 sm:h-5 ${stat.color}`} />
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{stat.value}</div>
+                <div className="text-xl sm:text-2xl font-bold">{stat.value}</div>
                 <p className="text-xs text-muted-foreground">{stat.description}</p>
               </CardContent>
             </Card>
@@ -270,25 +272,25 @@ export default function AdminDashboard() {
         </div>
 
         {/* Quick Actions */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {quickActions.map((action) => (
             <Card 
               key={action.title} 
               className={`${action.color} backdrop-blur-md border-0 shadow-neumorphic hover:shadow-glow transition-all duration-300 cursor-pointer`}
               onClick={action.action}
             >
-              <CardHeader>
+              <CardHeader className="p-4 sm:p-6">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg font-semibold text-card-foreground">
+                  <CardTitle className="text-base sm:text-lg font-semibold text-card-foreground">
                     {action.title}
                   </CardTitle>
                   {action.count !== undefined && action.count > 0 && (
-                    <Badge className="bg-primary text-primary-foreground">
+                    <Badge className="bg-primary text-primary-foreground text-xs">
                       {action.count}
                     </Badge>
                   )}
                 </div>
-                <CardDescription className="text-card-foreground/80">
+                <CardDescription className="text-card-foreground/80 text-xs sm:text-sm">
                   {action.description}
                 </CardDescription>
               </CardHeader>
