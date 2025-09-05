@@ -76,6 +76,60 @@ export default function AdminRequests() {
     }
   };
 
+  const handleRequestAction = async (requestId: string, status: 'approved' | 'rejected', request: BorrowRequest) => {
+    try {
+      // Update request status
+      const { error: updateError } = await supabase
+        .from('borrow_requests')
+        .update({ 
+          status,
+          approved_at: status === 'approved' ? new Date().toISOString() : null,
+          approved_by: sessionStorage.getItem('admin_email') || 'admin'
+        })
+        .eq('id', requestId);
+
+      if (updateError) throw updateError;
+
+      // Send email notification
+      if (status === 'approved') {
+        const { error: emailError } = await supabase.functions.invoke('send-loan-approval-email', {
+          body: {
+            borrower_name: request.requester_name,
+            borrower_email: request.email,
+            book_titles: request.requested_items.map(item => item.title).join(', '),
+            due_date: new Date(Date.now() + request.desired_duration_days * 24 * 60 * 60 * 1000).toLocaleDateString(),
+            pickup_location: request.pickup_location
+          }
+        });
+
+        if (emailError) {
+          console.error('Error sending email:', emailError);
+          toast({
+            title: "Partial Success",
+            description: "Request approved but failed to send email notification",
+            variant: "default",
+          });
+        }
+      }
+
+      // Refresh requests list
+      fetchRequests();
+
+      toast({
+        title: "Success",
+        description: `Request ${status} successfully`,
+        variant: "default",
+      });
+    } catch (error) {
+      console.error(`Error ${status === 'approved' ? 'approving' : 'rejecting'} request:`, error);
+      toast({
+        title: "Error",
+        description: `Failed to ${status === 'approved' ? 'approve' : 'reject'} request`,
+        variant: "destructive",
+      });
+    }
+  };
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'pending': return 'bg-gradient-warning text-warning-foreground';
@@ -201,11 +255,21 @@ export default function AdminRequests() {
                     </Button>
                     {request.status === 'pending' && (
                       <>
-                        <Button size="sm" variant="default" className="flex items-center gap-2">
+                        <Button 
+                          size="sm" 
+                          variant="default" 
+                          className="flex items-center gap-2"
+                          onClick={() => handleRequestAction(request.id, 'approved', request)}
+                        >
                           <CheckCircle className="w-4 h-4" />
                           Approve
                         </Button>
-                        <Button size="sm" variant="destructive" className="flex items-center gap-2">
+                        <Button 
+                          size="sm" 
+                          variant="destructive" 
+                          className="flex items-center gap-2"
+                          onClick={() => handleRequestAction(request.id, 'rejected', request)}
+                        >
                           <XCircle className="w-4 h-4" />
                           Reject
                         </Button>

@@ -1,4 +1,4 @@
-import { Book, User, Settings } from "lucide-react";
+import { Book, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useLocation } from "react-router-dom";
@@ -35,12 +35,7 @@ export function Header({ showSidebarTrigger = false }: HeaderProps) {
       </div>
 
       <div className="flex items-center gap-2">
-        {isAdminRoute ? (
-          <Button variant="outline" size="sm" className="shadow-neumorphic">
-            <Settings className="w-4 h-4 mr-2" />
-            Settings
-          </Button>
-        ) : (
+        {!isAdminRoute && (
           <Button variant="outline" size="sm" className="shadow-neumorphic">
             <User className="w-4 h-4 mr-2" />
             My Account

@@ -3,7 +3,6 @@ import {
   Search, 
   Heart, 
   User,
-  Settings,
   BarChart3,
   Users,
   BookOpen,
@@ -37,7 +36,6 @@ const adminItems = [
   { title: "Overdue Items", url: "/admin/overdue", icon: Clock },
   { title: "Inventory", url: "/admin/inventory", icon: Book },
   { title: "Activity Log", url: "/admin/activity", icon: AlertTriangle },
-  { title: "Settings", url: "/admin/settings", icon: Settings },
 ];
 
 export function AppSidebar() {

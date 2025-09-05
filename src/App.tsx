@@ -12,6 +12,8 @@ import AdminDashboard from "./pages/AdminDashboard";
 import AdminRequests from "./pages/AdminRequests";
 import AdminLoans from "./pages/AdminLoans";
 import AdminInventory from "./pages/AdminInventory";
+import AdminOverdue from "./pages/AdminOverdue";
+import AdminActivity from "./pages/AdminActivity";
 import BookDetails from "./pages/BookDetails";
 import NotFound from "./pages/NotFound";
 
@@ -52,6 +54,8 @@ const App = () => {
             <Route path="/admin/requests" element={<AdminRequests />} />
             <Route path="/admin/loans" element={<AdminLoans />} />
             <Route path="/admin/inventory" element={<AdminInventory />} />
+            <Route path="/admin/overdue" element={<AdminOverdue />} />
+            <Route path="/admin/activity" element={<AdminActivity />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
