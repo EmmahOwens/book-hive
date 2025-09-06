@@ -36,6 +36,8 @@ const App = () => {
             <Route path="/admin/inventory" element={<AdminInventory />} />
             <Route path="/admin/overdue" element={<AdminOverdue />} />
             <Route path="/admin/activity" element={<AdminActivity />} />
+            {/* Redirect old routes to prevent 404s */}
+            <Route path="/index" element={<Navigate to="/client" replace />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

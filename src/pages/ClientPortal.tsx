@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { SearchBar } from "@/components/SearchBar";
+import { SimpleSearchBar } from "@/components/SimpleSearchBar";
 import { BookCard } from "@/components/BookCard";
 import { BorrowModal } from "@/components/BorrowModal";
 import { useDebounce } from "@/hooks/useDebounce";
@@ -22,22 +22,12 @@ interface Book {
   total_copies: number;
 }
 
-interface SearchFilters {
-  categories: string[];
-  levels: string[];
-  availability: 'all' | 'available' | 'unavailable';
-}
 
 const ClientPortal = () => {
   const navigate = useNavigate();
   const [books, setBooks] = useState<Book[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
-  const [filters, setFilters] = useState<SearchFilters>({
-    categories: [],
-    levels: [],
-    availability: 'all'
-  });
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
   const [showBorrowModal, setShowBorrowModal] = useState(false);
 
@@ -60,23 +50,6 @@ const ClientPortal = () => {
       // Apply search filter
       if (debouncedSearchQuery) {
         query = query.or(`title.ilike.%${debouncedSearchQuery}%,authors.cs.{"${debouncedSearchQuery}"}`);
-      }
-
-      // Apply category filter
-      if (filters.categories.length > 0) {
-        query = query.overlaps('categories', filters.categories);
-      }
-
-      // Apply level filter
-      if (filters.levels.length > 0) {
-        query = query.in('level', filters.levels);
-      }
-
-      // Apply availability filter
-      if (filters.availability === 'available') {
-        query = query.gt('available_count', 0);
-      } else if (filters.availability === 'unavailable') {
-        query = query.eq('available_count', 0);
       }
 
       const { data, error } = await query.order('title');
@@ -106,7 +79,7 @@ const ClientPortal = () => {
 
   useEffect(() => {
     fetchBooks();
-  }, [debouncedSearchQuery, filters]);
+  }, [debouncedSearchQuery]);
 
   const handleBorrowBook = (bookId: string) => {
     const book = books.find(b => b.id === bookId);
@@ -202,22 +175,6 @@ const ClientPortal = () => {
           >
             <User className="w-4 h-4" />
           </Button>
-          <Button 
-            variant="outline" 
-            size="sm" 
-            className="shadow-neumorphic hidden sm:flex"
-            onClick={() => navigate('/')}
-          >
-            Back to Home
-          </Button>
-          <Button 
-            variant="outline" 
-            size="sm" 
-            className="shadow-neumorphic sm:hidden"
-            onClick={() => navigate('/')}
-          >
-            Home
-          </Button>
         </div>
       </header>
 
@@ -259,11 +216,9 @@ const ClientPortal = () => {
         {/* Search Section with Apple-style glass morphism */}
         <div className="mb-8 sm:mb-12 relative">
           <div className="glass rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-8 backdrop-blur-2xl">
-            <SearchBar
+            <SimpleSearchBar
               value={searchQuery}
               onChange={setSearchQuery}
-              filters={filters}
-              onFiltersChange={setFilters}
             />
           </div>
         </div>
@@ -288,8 +243,8 @@ const ClientPortal = () => {
               </div>
               <h3 className="headline-medium text-2xl mb-4">No books found</h3>
               <p className="body-large text-base max-w-md mx-auto">
-                {searchQuery || filters.categories.length > 0 || filters.levels.length > 0 
-                  ? "Try adjusting your search criteria or explore different categories"
+                {searchQuery 
+                  ? "Try adjusting your search terms or explore our featured collection"
                   : "Our collection is being updated. Please check back soon for new additions"
                 }
               </p>
