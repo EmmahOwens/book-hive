@@ -187,10 +187,17 @@ const Index = () => {
   return (
     <BookHiveLayout>
       <div className="container mx-auto px-6 py-8">
-        {/* Apple-style Hero Section */}
+        {/* Welcome Hero Section */}
         <div className="relative overflow-hidden rounded-3xl mb-16">
-          {/* Background with gradient mesh */}
-          <div className="absolute inset-0 bg-gradient-hero opacity-90"></div>
+          {/* Background image overlay */}
+          <div className="absolute inset-0">
+            <img 
+              src="/lovable-uploads/d697e99f-b60c-4a40-8293-c219863d2e49.png"
+              alt="Cartoon children reading books"
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-hero opacity-85"></div>
+          </div>
           <div className="absolute inset-0 bg-gradient-mesh"></div>
           
           {/* Content */}
@@ -205,21 +212,27 @@ const Index = () => {
                 />
               </div>
               <h1 className="headline-large text-white mb-6 animate-scale-in">
-                Discover Your Next
+                Welcome to
                 <br />
                 <span className="bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
-                  Great Read
+                  Book Hive
                 </span>
               </h1>
               <p className="body-large text-white/80 mb-8 max-w-2xl mx-auto animate-fade-in" style={{animationDelay: '0.2s'}}>
-                Explore our curated collection of academic and reference books with our modern, intuitive browsing experience
+                Your modern digital library experience. Browse our collection or manage library operations with ease.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in" style={{animationDelay: '0.4s'}}>
-                <button className="btn-primary hover-lift">
+                <button 
+                  className="btn-primary hover-lift"
+                  onClick={() => window.location.href = '/client'}
+                >
                   Browse Collection
                 </button>
-                <button className="glass text-white px-6 py-3 rounded-full font-medium hover-lift">
-                  Learn More
+                <button 
+                  className="glass text-white px-6 py-3 rounded-full font-medium hover-lift"
+                  onClick={() => window.location.href = '/admin/login'}
+                >
+                  Librarian Portal
                 </button>
               </div>
             </div>

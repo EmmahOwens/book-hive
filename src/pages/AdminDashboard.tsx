@@ -239,9 +239,9 @@ export default function AdminDashboard() {
               className="shadow-neumorphic"
               onClick={() => navigate('/client')}
             >
-              <BookOpen className="w-4 h-4 mr-2" />
+              <UserCheck className="w-4 h-4 mr-2" />
               <span className="hidden sm:inline">Client Portal</span>
-              <span className="sm:hidden">Portal</span>
+              <span className="sm:hidden">Client</span>
             </Button>
             <Badge variant="outline" className="bg-success/10 text-success border-success/20">
               <div className="w-2 h-2 bg-success rounded-full mr-2 animate-pulse" />
@@ -340,6 +340,90 @@ export default function AdminDashboard() {
                   </div>
                 ))
               )}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Reading Community Insights */}
+        <Card className="bg-gradient-secondary backdrop-blur-md border-0 shadow-neumorphic">
+          <CardHeader>
+            <CardTitle className="text-xl font-bold">Reading Community Insights</CardTitle>
+            <CardDescription>
+              Visual overview of our diverse reading community
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="relative overflow-hidden rounded-xl group">
+                <img 
+                  src="/lovable-uploads/d5db78c0-ff92-42fd-b5ad-b0ab4bdeb1e8.png"
+                  alt="Children reading together"
+                  className="w-full h-32 object-cover group-hover:scale-110 transition-transform duration-300"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                <div className="absolute bottom-2 left-2 text-white">
+                  <p className="text-sm font-semibold">Young Readers</p>
+                  <p className="text-xs opacity-90">Ages 5-12</p>
+                </div>
+              </div>
+              
+              <div className="relative overflow-hidden rounded-xl group">
+                <img 
+                  src="/lovable-uploads/7635b99b-4e4f-4208-ad6e-9bb52cae4d22.png"
+                  alt="Happy child reading"
+                  className="w-full h-32 object-cover group-hover:scale-110 transition-transform duration-300"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                <div className="absolute bottom-2 left-2 text-white">
+                  <p className="text-sm font-semibold">Early Learning</p>
+                  <p className="text-xs opacity-90">Toddlers</p>
+                </div>
+              </div>
+              
+              <div className="relative overflow-hidden rounded-xl group">
+                <img 
+                  src="/lovable-uploads/4bd5adac-a4cc-49e8-b967-c89183ed7483.png"
+                  alt="Professional reading"
+                  className="w-full h-32 object-cover group-hover:scale-110 transition-transform duration-300"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                <div className="absolute bottom-2 left-2 text-white">
+                  <p className="text-sm font-semibold">Professionals</p>
+                  <p className="text-xs opacity-90">Adults</p>
+                </div>
+              </div>
+              
+              <div className="relative overflow-hidden rounded-xl group">
+                <img 
+                  src="/lovable-uploads/b5baaf58-aae3-46c9-afb3-365855bf8d24.png"
+                  alt="Casual reading"
+                  className="w-full h-32 object-cover group-hover:scale-110 transition-transform duration-300"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                <div className="absolute bottom-2 left-2 text-white">
+                  <p className="text-sm font-semibold">Leisure Readers</p>
+                  <p className="text-xs opacity-90">All ages</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="mt-6 grid grid-cols-2 lg:grid-cols-4 gap-4 text-center">
+              <div className="bg-primary/10 rounded-xl p-4">
+                <div className="text-2xl font-bold text-primary">45%</div>
+                <p className="text-sm text-muted-foreground">Young Readers</p>
+              </div>
+              <div className="bg-success/10 rounded-xl p-4">
+                <div className="text-2xl font-bold text-success">25%</div>
+                <p className="text-sm text-muted-foreground">Professionals</p>
+              </div>
+              <div className="bg-warning/10 rounded-xl p-4">
+                <div className="text-2xl font-bold text-warning">20%</div>
+                <p className="text-sm text-muted-foreground">Students</p>
+              </div>
+              <div className="bg-info/10 rounded-xl p-4">
+                <div className="text-2xl font-bold text-info">10%</div>
+                <p className="text-sm text-muted-foreground">Others</p>
+              </div>
             </div>
           </CardContent>
         </Card>

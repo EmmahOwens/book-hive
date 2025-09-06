@@ -224,8 +224,15 @@ const ClientPortal = () => {
       <main className="container mx-auto px-4 sm:px-6 py-6 sm:py-8">
         {/* Apple-style Hero Section */}
         <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl mb-12 sm:mb-16">
-          {/* Background with gradient mesh */}
-          <div className="absolute inset-0 bg-gradient-hero opacity-90"></div>
+          {/* Background image overlay */}
+          <div className="absolute inset-0">
+            <img 
+              src="/lovable-uploads/8bfe05d5-a78c-4a87-94f7-be1c59fe094d.png"
+              alt="Person reading in library"
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-hero opacity-85"></div>
+          </div>
           <div className="absolute inset-0 bg-gradient-mesh"></div>
           
           {/* Content */}
@@ -330,6 +337,74 @@ const ClientPortal = () => {
               </div>
             </div>
           )}
+        </section>
+
+        {/* Reading Community Section */}
+        <section className="relative mt-16 sm:mt-24">
+          <div className="glass rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-12 backdrop-blur-2xl">
+            <div className="text-center mb-8 sm:mb-12">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4">
+                Join Our Reading Community
+              </h2>
+              <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto">
+                Discover the joy of reading with fellow book enthusiasts from all walks of life
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+              <div className="relative overflow-hidden rounded-xl sm:rounded-2xl group hover:scale-105 transition-transform duration-300">
+                <img 
+                  src="/lovable-uploads/aa64d050-5501-455a-adc8-a2244b8f98ec.png"
+                  alt="Child reading in library"
+                  className="w-full h-48 sm:h-60 object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                <div className="absolute bottom-4 left-4 text-white">
+                  <p className="font-semibold text-sm sm:text-base">Young Readers</p>
+                  <p className="text-xs sm:text-sm opacity-90">Building lifelong habits</p>
+                </div>
+              </div>
+              
+              <div className="relative overflow-hidden rounded-xl sm:rounded-2xl group hover:scale-105 transition-transform duration-300">
+                <img 
+                  src="/lovable-uploads/4bd5adac-a4cc-49e8-b967-c89183ed7483.png"
+                  alt="Professional woman reading"
+                  className="w-full h-48 sm:h-60 object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                <div className="absolute bottom-4 left-4 text-white">
+                  <p className="font-semibold text-sm sm:text-base">Professionals</p>
+                  <p className="text-xs sm:text-sm opacity-90">Continuous learning</p>
+                </div>
+              </div>
+              
+              <div className="relative overflow-hidden rounded-xl sm:rounded-2xl group hover:scale-105 transition-transform duration-300">
+                <img 
+                  src="/lovable-uploads/4d180e09-c1bc-4178-b708-c35fe7506ba6.png"
+                  alt="Children reading together outdoors"
+                  className="w-full h-48 sm:h-60 object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                <div className="absolute bottom-4 left-4 text-white">
+                  <p className="font-semibold text-sm sm:text-base">Study Groups</p>
+                  <p className="text-xs sm:text-sm opacity-90">Learning together</p>
+                </div>
+              </div>
+              
+              <div className="relative overflow-hidden rounded-xl sm:rounded-2xl group hover:scale-105 transition-transform duration-300">
+                <img 
+                  src="/lovable-uploads/b5baaf58-aae3-46c9-afb3-365855bf8d24.png"
+                  alt="Man reading with coffee"
+                  className="w-full h-48 sm:h-60 object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                <div className="absolute bottom-4 left-4 text-white">
+                  <p className="font-semibold text-sm sm:text-base">Relaxed Reading</p>
+                  <p className="text-xs sm:text-sm opacity-90">Comfort & knowledge</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </section>
 
         {/* Borrow Modal */}
