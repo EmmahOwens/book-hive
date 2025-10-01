@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { BookOpen, Users } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { motion } from "framer-motion";
 
 interface BookCardProps {
   id: string;
@@ -35,27 +36,44 @@ export const BookCard = ({
   const isAvailable = availableCount > 0;
   
   return (
-    <Card 
-      ref={ref as any}
-      className={`group transition-all duration-700 ease-apple backdrop-blur-xl bg-white/60 dark:bg-black/40 border border-white/20 dark:border-white/10 shadow-apple-lg hover:shadow-apple-xl hover:-translate-y-2 hover:scale-105 rounded-2xl overflow-hidden ${
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-      }`}
+    <motion.div
+      whileHover={{ y: -8 }}
+      transition={{ type: "spring", stiffness: 300, damping: 20 }}
     >
-      {/* Cover Image Section */}
-      {coverPath && (
-        <div className="relative h-48 w-full overflow-hidden">
-          <img 
-            src={coverPath} 
-            alt={title}
-            className="w-full h-full object-cover transition-all duration-500 group-hover:scale-110"
-            onError={(e) => {
-              const target = e.target as HTMLImageElement;
-              target.style.display = 'none';
-            }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-        </div>
-      )}
+      <Card 
+        ref={ref as any}
+        className={`group transition-all duration-700 ease-apple backdrop-blur-xl bg-white/60 dark:bg-black/40 border border-white/20 dark:border-white/10 shadow-apple-lg hover:shadow-apple-xl rounded-2xl overflow-hidden ${
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+        }`}
+      >
+        {/* Cover Image Section */}
+        {coverPath && (
+          <div className="relative h-48 w-full overflow-hidden">
+            <motion.img 
+              whileHover={{ scale: 1.1 }}
+              transition={{ duration: 0.4 }}
+              src={coverPath} 
+              alt={title}
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.style.display = 'none';
+              }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            
+            {/* Availability badge on hover */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileHover={{ opacity: 1, scale: 1 }}
+              className="absolute top-3 right-3"
+            >
+              <Badge className={`${isAvailable ? 'bg-success/90' : 'bg-destructive/90'} text-white backdrop-blur-sm`}>
+                {isAvailable ? 'Available' : 'Unavailable'}
+              </Badge>
+            </motion.div>
+          </div>
+        )}
       
       <CardHeader className="pb-2 sm:pb-3">
         <CardTitle className="text-base sm:text-lg font-semibold leading-tight line-clamp-2 group-hover:text-primary transition-colors duration-300">
@@ -114,23 +132,28 @@ export const BookCard = ({
       </CardContent>
       
       <CardFooter className="pt-0 pb-4 sm:pb-6 gap-2 sm:gap-3">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => onViewDetails(id)}
-          className="flex-1 rounded-full border-border/50 hover:border-primary/30 hover:bg-primary/5 transition-all duration-300 text-xs sm:text-sm"
-        >
-          Details
-        </Button>
-        <Button
-          onClick={() => onBorrow(id)}
-          disabled={!isAvailable}
-          size="sm"
-          className="flex-1 rounded-full bg-primary hover:bg-primary-dark disabled:opacity-50 disabled:cursor-not-allowed font-semibold transition-all duration-300 hover:scale-105 active:scale-95 text-xs sm:text-sm"
-        >
-          {isAvailable ? "Borrow" : "Unavailable"}
-        </Button>
+        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="flex-1">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => onViewDetails(id)}
+            className="w-full rounded-full border-border/50 hover:border-primary/30 hover:bg-primary/5 transition-all duration-300 text-xs sm:text-sm"
+          >
+            Details
+          </Button>
+        </motion.div>
+        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="flex-1">
+          <Button
+            onClick={() => onBorrow(id)}
+            disabled={!isAvailable}
+            size="sm"
+            className="w-full rounded-full bg-primary hover:bg-primary-dark disabled:opacity-50 disabled:cursor-not-allowed font-semibold transition-all duration-300 text-xs sm:text-sm"
+          >
+            {isAvailable ? "Borrow" : "Unavailable"}
+          </Button>
+        </motion.div>
       </CardFooter>
     </Card>
+    </motion.div>
   );
 };

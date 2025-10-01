@@ -17,6 +17,9 @@ import { Badge } from "@/components/ui/badge";
 import { useRealtimeSubscription } from "@/hooks/useRealtimeSubscription";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
+import { LoansTrendChart } from "@/components/LoansTrendChart";
+import { AnimatedCounter } from "@/components/AnimatedCounter";
+import { motion } from "framer-motion";
 
 interface DashboardStats {
   totalBooks: number;
@@ -47,6 +50,14 @@ export default function AdminDashboard() {
   });
   const [recentActivity, setRecentActivity] = useState<RecentActivity[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loansTrendData, setLoansTrendData] = useState([
+    { month: "Jan", loans: 45, returns: 38 },
+    { month: "Feb", loans: 52, returns: 45 },
+    { month: "Mar", loans: 61, returns: 50 },
+    { month: "Apr", loans: 58, returns: 55 },
+    { month: "May", loans: 67, returns: 60 },
+    { month: "Jun", loans: 73, returns: 65 },
+  ]);
 
   // Check admin authentication
   useEffect(() => {
@@ -253,96 +264,129 @@ export default function AdminDashboard() {
 
         {/* Statistics Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-          {statCards.map((stat) => (
-            <Card key={stat.title} className="bg-gradient-secondary shadow-neumorphic border-0">
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground">
-                  {stat.title}
-                </CardTitle>
-                <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-xl ${stat.bgColor} flex items-center justify-center`}>
-                  <stat.icon className={`w-4 h-4 sm:w-5 sm:h-5 ${stat.color}`} />
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="text-xl sm:text-2xl font-bold">{stat.value}</div>
-                <p className="text-xs text-muted-foreground">{stat.description}</p>
-              </CardContent>
-            </Card>
+          {statCards.map((stat, index) => (
+            <motion.div
+              key={stat.title}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1, duration: 0.5 }}
+            >
+              <Card className="bg-gradient-secondary shadow-neumorphic border-0 hover:shadow-glow transition-all duration-300">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground">
+                    {stat.title}
+                  </CardTitle>
+                  <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-xl ${stat.bgColor} flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
+                    <stat.icon className={`w-4 h-4 sm:w-5 sm:h-5 ${stat.color}`} />
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-xl sm:text-2xl font-bold">
+                    <AnimatedCounter end={stat.value} />
+                  </div>
+                  <p className="text-xs text-muted-foreground">{stat.description}</p>
+                </CardContent>
+              </Card>
+            </motion.div>
           ))}
         </div>
 
+        {/* Loans Trend Chart */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6, duration: 0.5 }}
+        >
+          <LoansTrendChart data={loansTrendData} />
+        </motion.div>
+
         {/* Quick Actions */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-          {quickActions.map((action) => (
-            <Card 
-              key={action.title} 
-              className={`${action.color} backdrop-blur-md border-0 shadow-neumorphic hover:shadow-glow transition-all duration-300 cursor-pointer`}
-              onClick={action.action}
+          {quickActions.map((action, index) => (
+            <motion.div
+              key={action.title}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.7 + index * 0.1 }}
             >
-              <CardHeader className="p-4 sm:p-6">
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-base sm:text-lg font-semibold text-card-foreground">
-                    {action.title}
-                  </CardTitle>
-                  {action.count !== undefined && action.count > 0 && (
-                    <Badge className="bg-primary text-primary-foreground text-xs">
-                      {action.count}
-                    </Badge>
-                  )}
-                </div>
-                <CardDescription className="text-card-foreground/80 text-xs sm:text-sm">
-                  {action.description}
-                </CardDescription>
-              </CardHeader>
-            </Card>
+              <Card 
+                className={`${action.color} backdrop-blur-md border-0 shadow-neumorphic hover:shadow-glow transition-all duration-300 cursor-pointer hover:scale-105`}
+                onClick={action.action}
+              >
+                <CardHeader className="p-4 sm:p-6">
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-base sm:text-lg font-semibold text-card-foreground">
+                      {action.title}
+                    </CardTitle>
+                    {action.count !== undefined && action.count > 0 && (
+                      <Badge className="bg-primary text-primary-foreground text-xs animate-pulse-glow">
+                        {action.count}
+                      </Badge>
+                    )}
+                  </div>
+                  <CardDescription className="text-card-foreground/80 text-xs sm:text-sm">
+                    {action.description}
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+            </motion.div>
           ))}
         </div>
 
         {/* Recent Activity */}
-        <Card className="bg-gradient-glass backdrop-blur-md border-border/50 shadow-glass">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <TrendingUp className="w-5 h-5 text-primary" />
-              Recent Activity
-            </CardTitle>
-            <CardDescription>
-              Latest actions and system events
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {recentActivity.length === 0 ? (
-                <p className="text-muted-foreground text-center py-4">
-                  No recent activity to display
-                </p>
-              ) : (
-                recentActivity.map((activity) => (
-                  <div 
-                    key={activity.id} 
-                    className="flex items-center justify-between p-3 bg-card/50 rounded-xl border border-border/50"
-                  >
-                    <div>
-                      <p className="font-medium text-card-foreground">
-                        {activity.action}
-                      </p>
-                      <p className="text-sm text-muted-foreground">
-                        by {activity.actor}
-                      </p>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-sm text-muted-foreground">
-                        {new Date(activity.created_at).toLocaleDateString()}
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        {new Date(activity.created_at).toLocaleTimeString()}
-                      </p>
-                    </div>
-                  </div>
-                ))
-              )}
-            </div>
-          </CardContent>
-        </Card>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.1, duration: 0.5 }}
+        >
+          <Card className="glass backdrop-blur-md border-border/50 shadow-glass">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <TrendingUp className="w-5 h-5 text-primary" />
+                Recent Activity
+              </CardTitle>
+              <CardDescription>
+                Latest actions and system events
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {recentActivity.length === 0 ? (
+                  <p className="text-muted-foreground text-center py-4">
+                    No recent activity to display
+                  </p>
+                ) : (
+                  recentActivity.map((activity, index) => (
+                    <motion.div 
+                      key={activity.id}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 1.2 + index * 0.05 }}
+                      className="flex items-center justify-between p-3 bg-card/50 rounded-xl border border-border/50 hover:bg-card/80 transition-colors duration-300"
+                    >
+                      <div>
+                        <p className="font-medium text-card-foreground">
+                          {activity.action}
+                        </p>
+                        <p className="text-sm text-muted-foreground">
+                          by {activity.actor}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-sm text-muted-foreground">
+                          {new Date(activity.created_at).toLocaleDateString()}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {new Date(activity.created_at).toLocaleTimeString()}
+                        </p>
+                      </div>
+                    </motion.div>
+                  ))
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
 
         {/* Reading Community Insights */}
         <Card className="bg-gradient-secondary backdrop-blur-md border-0 shadow-neumorphic">

@@ -1,14 +1,18 @@
 import { useState, useEffect } from "react";
 import { SimpleSearchBar } from "@/components/SimpleSearchBar";
 import { BookCard } from "@/components/BookCard";
+import { BookCardSkeleton } from "@/components/BookCardSkeleton";
 import { BorrowModal } from "@/components/BorrowModal";
+import { LibraryStats } from "@/components/LibraryStats";
+import { CategoryCard } from "@/components/CategoryCard";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useRealtimeSubscription } from "@/hooks/useRealtimeSubscription";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
-import { Loader2, BookOpen, Book, User } from "lucide-react";
+import { BookOpen, User, Microscope, Calculator, Globe, Palette, Music, BookMarked } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 interface Book {
   id: string;
@@ -30,8 +34,24 @@ const ClientPortal = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
   const [showBorrowModal, setShowBorrowModal] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [stats, setStats] = useState({
+    totalBooks: 0,
+    totalBorrowers: 0,
+    activeLoans: 0,
+    avgBorrowTime: 14,
+  });
 
   const debouncedSearchQuery = useDebounce(searchQuery, 250);
+
+  const categories = [
+    { name: "Science", icon: Microscope, description: "Scientific research & experiments", gradient: "bg-gradient-to-br from-blue-500 to-cyan-500" },
+    { name: "Mathematics", icon: Calculator, description: "Numbers, formulas & logic", gradient: "bg-gradient-to-br from-purple-500 to-pink-500" },
+    { name: "Literature", icon: BookMarked, description: "Classic & modern literature", gradient: "bg-gradient-to-br from-orange-500 to-red-500" },
+    { name: "Geography", icon: Globe, description: "World cultures & places", gradient: "bg-gradient-to-br from-green-500 to-teal-500" },
+    { name: "Arts", icon: Palette, description: "Visual & performing arts", gradient: "bg-gradient-to-br from-pink-500 to-rose-500" },
+    { name: "Music", icon: Music, description: "Theory & history of music", gradient: "bg-gradient-to-br from-indigo-500 to-purple-500" },
+  ];
 
   // Realtime subscription for book availability updates
   useRealtimeSubscription({
@@ -50,6 +70,11 @@ const ClientPortal = () => {
       // Apply search filter
       if (debouncedSearchQuery) {
         query = query.or(`title.ilike.%${debouncedSearchQuery}%,authors.cs.{"${debouncedSearchQuery}"}`);
+      }
+
+      // Apply category filter
+      if (selectedCategory) {
+        query = query.contains('categories', [selectedCategory]);
       }
 
       const { data, error } = await query.order('title');
@@ -78,8 +103,26 @@ const ClientPortal = () => {
   };
 
   useEffect(() => {
+    const fetchStats = async () => {
+      const [booksResult, loansResult] = await Promise.all([
+        (supabase as any).from('books').select('*', { count: 'exact' }),
+        (supabase as any).from('loans').select('*', { count: 'exact' }).eq('status', 'active'),
+      ]);
+
+      setStats({
+        totalBooks: booksResult.count || 0,
+        totalBorrowers: Math.floor((loansResult.count || 0) * 0.8),
+        activeLoans: loansResult.count || 0,
+        avgBorrowTime: 14,
+      });
+    };
+
+    fetchStats();
+  }, []);
+
+  useEffect(() => {
     fetchBooks();
-  }, [debouncedSearchQuery]);
+  }, [debouncedSearchQuery, selectedCategory]);
 
   const handleBorrowBook = (bookId: string) => {
     const book = books.find(b => b.id === bookId);
@@ -213,25 +256,98 @@ const ClientPortal = () => {
           <div className="absolute bottom-20 right-20 w-40 h-40 bg-blue-300/10 rounded-full blur-xl animate-float hidden lg:block" style={{animationDelay: '1s'}}></div>
         </div>
 
+        {/* Library Stats */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="mb-12"
+        >
+          <LibraryStats {...stats} />
+        </motion.div>
+
         {/* Search Section with Apple-style glass morphism */}
-        <div className="mb-8 sm:mb-12 relative">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="mb-8 sm:mb-12 relative"
+        >
           <div className="glass rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-8 backdrop-blur-2xl">
             <SimpleSearchBar
               value={searchQuery}
               onChange={setSearchQuery}
             />
           </div>
-        </div>
+        </motion.div>
+
+        {/* Browse by Category */}
+        {!searchQuery && !selectedCategory && (
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="mb-12"
+          >
+            <div className="mb-6">
+              <h2 className="text-2xl sm:text-3xl font-bold mb-2">
+                Browse by Category
+              </h2>
+              <p className="text-muted-foreground">
+                Explore our collection by subject area
+              </p>
+            </div>
+            <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+              {categories.map((category, index) => (
+                <motion.div
+                  key={category.name}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.5 + index * 0.1 }}
+                >
+                  <CategoryCard
+                    name={category.name}
+                    icon={category.icon}
+                    count={Math.floor(Math.random() * 50) + 10}
+                    description={category.description}
+                    gradient={category.gradient}
+                    onClick={() => setSelectedCategory(category.name)}
+                  />
+                </motion.div>
+              ))}
+            </div>
+          </motion.section>
+        )}
 
         {/* Apple-style Books Grid Section */}
         <section className="relative">
-          {loading ? (
-            <div className="flex flex-col items-center justify-center py-24">
-              <div className="relative">
-                <div className="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
-                <div className="absolute inset-0 w-16 h-16 border-4 border-transparent border-t-primary/60 rounded-full animate-spin" style={{animationDirection: 'reverse', animationDuration: '1s'}}></div>
+          {/* Category filter badge */}
+          {selectedCategory && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-6"
+            >
+              <div className="flex items-center gap-3">
+                <span className="text-sm text-muted-foreground">Viewing:</span>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setSelectedCategory(null)}
+                  className="gap-2 shadow-neumorphic"
+                >
+                  {selectedCategory}
+                  <span className="text-muted-foreground">×</span>
+                </Button>
               </div>
-              <p className="mt-6 text-muted-foreground font-medium">Loading your books...</p>
+            </motion.div>
+          )}
+
+          {loading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-8">
+              {[...Array(6)].map((_, i) => (
+                <BookCardSkeleton key={i} />
+              ))}
             </div>
           ) : books.length === 0 ? (
             <div className="text-center py-24">
