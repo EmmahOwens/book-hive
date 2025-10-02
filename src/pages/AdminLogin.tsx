@@ -10,7 +10,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { BookHiveLayout } from "@/components/BookHiveLayout";
 import { supabase } from "@/integrations/supabase/client";
-import { toast } from "@/hooks/use-toast";
+import { useNotification } from "@/hooks/useNotification";
 
 const adminLoginSchema = z.object({
   password: z.string().min(1, "Password is required"),
@@ -22,6 +22,7 @@ export default function AdminLogin() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { showNotification } = useNotification();
 
   const form = useForm<AdminLoginData>({
     resolver: zodResolver(adminLoginSchema),
@@ -41,11 +42,11 @@ export default function AdminLogin() {
 
       if (error) {
         console.error('Admin login error:', error);
-        toast({
-          title: "Authentication Failed",
-          description: "Invalid admin password. Please try again.",
-          variant: "destructive",
-        });
+        showNotification(
+          'error',
+          'Authentication Failed',
+          'Invalid admin password. Please try again.'
+        );
         return;
       }
 
@@ -53,26 +54,27 @@ export default function AdminLogin() {
         // Store admin token in sessionStorage for this session
         sessionStorage.setItem('admin_token', result.token);
         
-        toast({
-          title: "Welcome, Administrator",
-          description: "You have been successfully authenticated.",
-        });
+        showNotification(
+          'success',
+          'Welcome, Administrator!',
+          'You have been successfully authenticated and will be redirected to the dashboard.'
+        );
         
-        navigate('/admin');
+        setTimeout(() => navigate('/admin'), 1500);
       } else {
-        toast({
-          title: "Authentication Failed",
-          description: "Invalid admin password. Please try again.",
-          variant: "destructive",
-        });
+        showNotification(
+          'error',
+          'Authentication Failed',
+          'Invalid admin password. Please try again.'
+        );
       }
     } catch (error) {
       console.error('Admin login error:', error);
-      toast({
-        title: "Error",
-        description: "An error occurred during authentication. Please try again.",
-        variant: "destructive",
-      });
+      showNotification(
+        'error',
+        'Authentication Error',
+        'An unexpected error occurred. Please try again later.'
+      );
     } finally {
       setIsLoading(false);
     }

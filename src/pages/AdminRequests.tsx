@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
-import { toast } from "@/hooks/use-toast";
+import { useNotification } from "@/hooks/useNotification";
 import { useRealtimeSubscription } from "@/hooks/useRealtimeSubscription";
 
 interface BorrowRequest {
@@ -33,6 +33,7 @@ export default function AdminRequests() {
   const [requests, setRequests] = useState<BorrowRequest[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
+  const { showNotification } = useNotification();
 
   useEffect(() => {
     // Check admin authentication
@@ -75,11 +76,11 @@ export default function AdminRequests() {
       setRequests(transformedData);
     } catch (error) {
       console.error('Error fetching requests:', error);
-      toast({
-        title: "Error",
-        description: "Failed to load borrow requests",
-        variant: "destructive",
-      });
+      showNotification(
+        'error',
+        'Loading Error',
+        'Failed to load borrow requests. Please refresh the page.'
+      );
     } finally {
       setIsLoading(false);
     }
@@ -105,18 +106,20 @@ export default function AdminRequests() {
       // Refresh requests list
       fetchRequests();
 
-      toast({
-        title: "Success",
-        description: `Request ${status} successfully`,
-        variant: "default",
-      });
+      showNotification(
+        'success',
+        `Request ${status === 'approved' ? 'Approved' : 'Rejected'}!`,
+        status === 'approved' 
+          ? 'The borrow request has been approved. An email notification has been sent to the requester.'
+          : 'The borrow request has been rejected. The requester has been notified.'
+      );
     } catch (error: any) {
       console.error(`Error ${status === 'approved' ? 'approving' : 'rejecting'} request:`, error);
-      toast({
-        title: "Error",
-        description: error.message || `Failed to ${status === 'approved' ? 'approve' : 'reject'} request`,
-        variant: "destructive",
-      });
+      showNotification(
+        'error',
+        'Action Failed',
+        error.message || `Failed to ${status === 'approved' ? 'approve' : 'reject'} the request. Please try again.`
+      );
     }
   };
 

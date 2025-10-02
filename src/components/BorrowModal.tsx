@@ -31,7 +31,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { toast } from "@/hooks/use-toast";
+import { useNotification } from "@/hooks/useNotification";
 
 const borrowFormSchema = z.object({
   requesterName: z.string().min(2, "Name must be at least 2 characters"),
@@ -80,6 +80,7 @@ const PICKUP_LOCATIONS = [
 
 export function BorrowModal({ isOpen, onClose, book, onSubmit }: BorrowModalProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { showNotification } = useNotification();
 
   const form = useForm<BorrowFormData>({
     resolver: zodResolver(borrowFormSchema),
@@ -103,18 +104,19 @@ export function BorrowModal({ isOpen, onClose, book, onSubmit }: BorrowModalProp
     setIsSubmitting(true);
     try {
       await onSubmit({ ...data, bookId: book.id });
-      toast({
-        title: "Request Submitted",
-        description: "Your borrow request has been submitted successfully. You'll receive an email confirmation shortly.",
-      });
+      showNotification(
+        'success',
+        'Request Submitted Successfully!',
+        'Your borrow request has been submitted. You will receive an email confirmation shortly with further details.'
+      );
       onClose();
       form.reset();
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to submit borrow request. Please try again.",
-        variant: "destructive",
-      });
+      showNotification(
+        'error',
+        'Submission Failed',
+        'Failed to submit your borrow request. Please try again or contact support.'
+      );
     } finally {
       setIsSubmitting(false);
     }
