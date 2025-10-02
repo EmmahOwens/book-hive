@@ -50,14 +50,7 @@ export default function AdminDashboard() {
   });
   const [recentActivity, setRecentActivity] = useState<RecentActivity[]>([]);
   const [loading, setLoading] = useState(true);
-  const [loansTrendData, setLoansTrendData] = useState([
-    { month: "Jan", loans: 45, returns: 38 },
-    { month: "Feb", loans: 52, returns: 45 },
-    { month: "Mar", loans: 61, returns: 50 },
-    { month: "Apr", loans: 58, returns: 55 },
-    { month: "May", loans: 67, returns: 60 },
-    { month: "Jun", loans: 73, returns: 65 },
-  ]);
+  const [loansTrendData, setLoansTrendData] = useState<Array<{ month: string; loans: number; returns: number }>>([]);
 
   // Check admin authentication
   useEffect(() => {
@@ -77,8 +70,14 @@ export default function AdminDashboard() {
 
   useRealtimeSubscription({
     table: 'loans',
-    onInsert: () => fetchStats(),
-    onUpdate: () => fetchStats(),
+    onInsert: () => {
+      fetchStats();
+      fetchLoansTrend();
+    },
+    onUpdate: () => {
+      fetchStats();
+      fetchLoansTrend();
+    },
   });
 
   useRealtimeSubscription({
@@ -139,10 +138,70 @@ export default function AdminDashboard() {
     }
   };
 
+  const fetchLoansTrend = async () => {
+    try {
+      // Fetch loans from the last 6 months
+      const sixMonthsAgo = new Date();
+      sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+      
+      const { data: loansData, error } = await supabase
+        .from('loans')
+        .select('issued_date, returned_date, status')
+        .gte('issued_date', sixMonthsAgo.toISOString().split('T')[0]);
+
+      if (error) throw error;
+
+      // Group by month
+      const monthlyData: { [key: string]: { loans: number; returns: number } } = {};
+      const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      
+      // Initialize last 6 months
+      for (let i = 5; i >= 0; i--) {
+        const date = new Date();
+        date.setMonth(date.getMonth() - i);
+        const monthKey = `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
+        monthlyData[monthKey] = { loans: 0, returns: 0 };
+      }
+
+      // Count loans and returns
+      loansData?.forEach((loan) => {
+        const issuedDate = new Date(loan.issued_date);
+        const issuedMonthKey = `${monthNames[issuedDate.getMonth()]} ${issuedDate.getFullYear()}`;
+        
+        if (monthlyData[issuedMonthKey]) {
+          monthlyData[issuedMonthKey].loans++;
+        }
+
+        if (loan.returned_date) {
+          const returnedDate = new Date(loan.returned_date);
+          const returnedMonthKey = `${monthNames[returnedDate.getMonth()]} ${returnedDate.getFullYear()}`;
+          
+          if (monthlyData[returnedMonthKey]) {
+            monthlyData[returnedMonthKey].returns++;
+          }
+        }
+      });
+
+      // Convert to array format
+      const chartData = Object.keys(monthlyData).map(key => {
+        const [month] = key.split(' ');
+        return {
+          month,
+          loans: monthlyData[key].loans,
+          returns: monthlyData[key].returns,
+        };
+      });
+
+      setLoansTrendData(chartData);
+    } catch (error) {
+      console.error('Error fetching loans trend:', error);
+    }
+  };
+
   useEffect(() => {
     const loadDashboard = async () => {
       setLoading(true);
-      await Promise.all([fetchStats(), fetchRecentActivity()]);
+      await Promise.all([fetchStats(), fetchRecentActivity(), fetchLoansTrend()]);
       setLoading(false);
     };
 
@@ -263,7 +322,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* Statistics Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
           {statCards.map((stat, index) => (
             <motion.div
               key={stat.title}
@@ -301,7 +360,7 @@ export default function AdminDashboard() {
         </motion.div>
 
         {/* Quick Actions */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6">
           {quickActions.map((action, index) => (
             <motion.div
               key={action.title}
@@ -397,7 +456,7 @@ export default function AdminDashboard() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
               <div className="relative overflow-hidden rounded-xl group">
                 <img 
                   src="/lovable-uploads/d5db78c0-ff92-42fd-b5ad-b0ab4bdeb1e8.png"
@@ -451,7 +510,7 @@ export default function AdminDashboard() {
               </div>
             </div>
             
-            <div className="mt-6 grid grid-cols-2 lg:grid-cols-4 gap-4 text-center">
+            <div className="mt-6 grid grid-cols-2 xl:grid-cols-4 gap-4 text-center">
               <div className="bg-primary/10 rounded-xl p-4">
                 <div className="text-2xl font-bold text-primary">45%</div>
                 <p className="text-sm text-muted-foreground">Young Readers</p>
