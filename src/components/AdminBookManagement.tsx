@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { useRealtimeSubscription } from "@/hooks/useRealtimeSubscription";
 import { 
   Plus, 
   Edit, 
@@ -89,6 +90,21 @@ export function AdminBookManagement() {
     fetchLevels();
     fetchCategories();
   }, []);
+
+  // Setup realtime subscriptions for books and copies
+  useRealtimeSubscription({
+    table: 'books',
+    onInsert: () => fetchBooks(),
+    onUpdate: () => fetchBooks(),
+    onDelete: () => fetchBooks(),
+  });
+
+  useRealtimeSubscription({
+    table: 'copies',
+    onInsert: () => fetchBooks(),
+    onUpdate: () => fetchBooks(),
+    onDelete: () => fetchBooks(),
+  });
 
   const fetchBooks = async () => {
     try {

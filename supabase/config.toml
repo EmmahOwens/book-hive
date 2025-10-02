@@ -11,3 +11,6 @@ verify_jwt = false
 
 [functions.daily-overdue-check]
 verify_jwt = false
+
+[functions.process-borrow-request]
+verify_jwt = false

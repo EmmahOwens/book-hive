@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
+import { useRealtimeSubscription } from "@/hooks/useRealtimeSubscription";
 
 interface Loan {
   id: string;
@@ -37,6 +38,14 @@ export default function AdminLoans() {
 
     fetchLoans();
   }, [navigate]);
+
+  // Setup realtime subscription for loans
+  useRealtimeSubscription({
+    table: 'loans',
+    onInsert: () => fetchLoans(),
+    onUpdate: () => fetchLoans(),
+    onDelete: () => fetchLoans(),
+  });
 
   const fetchLoans = async () => {
     try {

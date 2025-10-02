@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
+import { useRealtimeSubscription } from "@/hooks/useRealtimeSubscription";
 
 interface BorrowRequest {
   id: string;
@@ -44,6 +45,14 @@ export default function AdminRequests() {
     fetchRequests();
   }, [navigate]);
 
+  // Setup realtime subscription for borrow requests
+  useRealtimeSubscription({
+    table: 'borrow_requests',
+    onInsert: () => fetchRequests(),
+    onUpdate: () => fetchRequests(),
+    onDelete: () => fetchRequests(),
+  });
+
   const fetchRequests = async () => {
     try {
       const { data, error } = await supabase
@@ -76,41 +85,21 @@ export default function AdminRequests() {
     }
   };
 
-  const handleRequestAction = async (requestId: string, status: 'approved' | 'rejected', request: BorrowRequest) => {
+  const handleRequestAction = async (requestId: string, status: 'approved' | 'rejected') => {
     try {
-      // Update request status
-      const { error: updateError } = await supabase
-        .from('borrow_requests')
-        .update({ 
-          status,
-          approved_at: status === 'approved' ? new Date().toISOString() : null,
-          approved_by: sessionStorage.getItem('admin_email') || 'admin'
-        })
-        .eq('id', requestId);
-
-      if (updateError) throw updateError;
-
-      // Send email notification
-      if (status === 'approved') {
-        const { error: emailError } = await supabase.functions.invoke('send-loan-approval-email', {
-          body: {
-            borrowRequestId: requestId,
-            borrowerName: request.requester_name,
-            borrowerEmail: request.email,
-            bookTitle: request.requested_items.map(item => item.title).join(', '),
-            dueDate: new Date(Date.now() + request.desired_duration_days * 24 * 60 * 60 * 1000).toLocaleDateString(),
-            pickupLocation: request.pickup_location
-          }
-        });
-
-        if (emailError) {
-          console.error('Error sending email:', emailError);
-          toast({
-            title: "Partial Success",
-            description: "Request approved but failed to send email notification",
-            variant: "default",
-          });
+      // Call edge function to process the request
+      const { data, error } = await supabase.functions.invoke('process-borrow-request', {
+        body: {
+          requestId,
+          action: status,
+          adminEmail: sessionStorage.getItem('admin_email') || 'admin'
         }
+      });
+
+      if (error) throw error;
+
+      if (!data?.success) {
+        throw new Error(data?.error || 'Failed to process request');
       }
 
       // Refresh requests list
@@ -121,11 +110,11 @@ export default function AdminRequests() {
         description: `Request ${status} successfully`,
         variant: "default",
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error(`Error ${status === 'approved' ? 'approving' : 'rejecting'} request:`, error);
       toast({
         title: "Error",
-        description: `Failed to ${status === 'approved' ? 'approve' : 'reject'} request`,
+        description: error.message || `Failed to ${status === 'approved' ? 'approve' : 'reject'} request`,
         variant: "destructive",
       });
     }
@@ -260,7 +249,7 @@ export default function AdminRequests() {
                           size="sm" 
                           variant="default" 
                           className="flex items-center justify-center gap-2 w-full sm:w-auto"
-                          onClick={() => handleRequestAction(request.id, 'approved', request)}
+                          onClick={() => handleRequestAction(request.id, 'approved')}
                         >
                           <CheckCircle className="w-4 h-4" />
                           Approve
@@ -269,7 +258,7 @@ export default function AdminRequests() {
                           size="sm" 
                           variant="destructive" 
                           className="flex items-center justify-center gap-2 w-full sm:w-auto"
-                          onClick={() => handleRequestAction(request.id, 'rejected', request)}
+                          onClick={() => handleRequestAction(request.id, 'rejected')}
                         >
                           <XCircle className="w-4 h-4" />
                           Reject
