@@ -43,7 +43,7 @@ const Index = () => {
 
   // Realtime subscription for book availability updates
   useRealtimeSubscription({
-    table: 'books_view',
+    table: 'books_realtime_view',
     onUpdate: (payload) => {
       console.log('Book availability updated:', payload);
       fetchBooks(); // Refresh books when availability changes
@@ -53,7 +53,7 @@ const Index = () => {
   const fetchBooks = async () => {
     try {
       setLoading(true);
-      let query = (supabase as any).from('books_view').select('*');
+      let query = (supabase as any).from('books_realtime_view').select('*');
 
       // Apply search filter
       if (debouncedSearchQuery) {

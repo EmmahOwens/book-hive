@@ -105,7 +105,7 @@ export type Database = {
             foreignKeyName: "book_categories_book_id_fkey"
             columns: ["book_id"]
             isOneToOne: false
-            referencedRelation: "books_materialized_view"
+            referencedRelation: "books_realtime_view"
             referencedColumns: ["id"]
           },
           {
@@ -303,7 +303,7 @@ export type Database = {
             foreignKeyName: "copies_book_id_fkey"
             columns: ["book_id"]
             isOneToOne: false
-            referencedRelation: "books_materialized_view"
+            referencedRelation: "books_realtime_view"
             referencedColumns: ["id"]
           },
         ]
@@ -407,57 +407,9 @@ export type Database = {
           },
         ]
       }
-      notification_queue: {
-        Row: {
-          attempts: number
-          created_at: string
-          email_content: string
-          email_subject: string
-          email_to: string
-          error_message: string | null
-          id: string
-          last_attempt_at: string | null
-          notification_type: string
-          payload: Json | null
-          sent_at: string | null
-          status: string
-          updated_at: string
-        }
-        Insert: {
-          attempts?: number
-          created_at?: string
-          email_content: string
-          email_subject: string
-          email_to: string
-          error_message?: string | null
-          id?: string
-          last_attempt_at?: string | null
-          notification_type: string
-          payload?: Json | null
-          sent_at?: string | null
-          status?: string
-          updated_at?: string
-        }
-        Update: {
-          attempts?: number
-          created_at?: string
-          email_content?: string
-          email_subject?: string
-          email_to?: string
-          error_message?: string | null
-          id?: string
-          last_attempt_at?: string | null
-          notification_type?: string
-          payload?: Json | null
-          sent_at?: string | null
-          status?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
     }
     Views: {
-      books_materialized_view: {
+      books_realtime_view: {
         Row: {
           authors: string[] | null
           available_count: number | null
@@ -465,13 +417,8 @@ export type Database = {
           cover_path: string | null
           created_at: string | null
           description: string | null
-          edition: string | null
           id: string | null
-          isbn: string | null
-          language: string | null
           level: string | null
-          publication_year: number | null
-          publisher: string | null
           title: string | null
           total_copies: number | null
           updated_at: string | null
@@ -480,10 +427,6 @@ export type Database = {
       }
     }
     Functions: {
-      create_loans_batch: {
-        Args: { loans_data: Json }
-        Returns: Json
-      }
       queue_notification: {
         Args: {
           email_content: string
@@ -493,10 +436,6 @@ export type Database = {
           payload_data?: Json
         }
         Returns: Json
-      }
-      refresh_books_materialized_view: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
       }
     }
     Enums: {

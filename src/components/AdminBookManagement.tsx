@@ -108,8 +108,8 @@ export function AdminBookManagement() {
 
   const fetchBooks = async () => {
     try {
-      const { data, error } = await (supabase as any)
-        .from('books_view')
+      const { data, error } = await supabase
+        .from('books_realtime_view')
         .select('*')
         .order('title');
 

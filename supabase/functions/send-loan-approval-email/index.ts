@@ -88,20 +88,14 @@ serve(async (req) => {
       </div>
     `;
 
-    // Email simulation - logs email without external service
-    console.log('=== LOAN APPROVAL EMAIL ===');
-    console.log('To:', borrowerEmail);
-    console.log('Borrower:', borrowerName);
-    console.log('Book:', bookTitle);
-    console.log('Due Date:', dueDate);
-    console.log('Pickup Location:', pickupLocation);
-    console.log('Subject:', emailSubject);
-    console.log('Email Content:');
-    console.log(emailHtml);
-    console.log('Timestamp:', new Date().toISOString());
-    console.log('==========================');
+    // Simulate sending email (in production, integrate with Resend, SendGrid, etc.)
+    console.log('Sending loan approval email:', { 
+      to: borrowerEmail, 
+      subject: emailSubject,
+      borrowRequestId 
+    });
     
-    // Simulate successful sending
+    // For demo purposes, simulate successful sending
     const emailResult = {
       id: `email_${Date.now()}`,
       success: true,
