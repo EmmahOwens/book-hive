@@ -63,8 +63,8 @@ const BookDetails = () => {
 
   const fetchBookDetails = async () => {
     try {
-      const { data, error } = await supabase
-        .from('books_realtime_view')
+      const { data, error } = await (supabase as any)
+        .from('books_view')
         .select('*')
         .eq('id', bookId)
         .single();
@@ -85,8 +85,8 @@ const BookDetails = () => {
 
   const fetchRelatedBooks = async () => {
     try {
-      const { data, error } = await supabase
-        .from('books_realtime_view')
+      const { data, error } = await (supabase as any)
+        .from('books_view')
         .select('id, title, authors, cover_path, available_count')
         .neq('id', bookId)
         .limit(4);

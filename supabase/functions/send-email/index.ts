@@ -29,26 +29,21 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    // Simulate email sending (in production, use SMTP service like Resend, SendGrid, etc.)
-    console.log('Sending email:', { to, subject, queueId });
-    
-    // For demo purposes, we'll just log the email and mark as sent
-    // In production, you would integrate with an actual email service:
-    /*
-    const emailService = new Resend(Deno.env.get('RESEND_API_KEY'));
-    const emailResult = await emailService.emails.send({
-      from: 'noreply@bookhive.library',
-      to: to,
-      subject: subject,
-      html: html,
-      text: text,
-    });
-    */
+    // Email simulation - logs email without external service
+    console.log('=== EMAIL NOTIFICATION ===');
+    console.log('To:', to);
+    console.log('Subject:', subject);
+    console.log('HTML Content:', html || 'N/A');
+    console.log('Text Content:', text || 'N/A');
+    console.log('Queue ID:', queueId || 'None');
+    console.log('Timestamp:', new Date().toISOString());
+    console.log('========================');
 
-    // For now, simulate successful sending
+    // Simulate successful email delivery
     const emailResult = {
       id: `email_${Date.now()}`,
-      success: true
+      success: true,
+      message: 'Email logged successfully (simulation mode)'
     };
 
     // Update notification queue if this was queued
