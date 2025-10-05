@@ -61,63 +61,51 @@ const Index = () => {
   const fetchBooks = async () => {
     try {
       setLoading(true);
-      console.log('Starting fetchBooks...');
-      
       let query = supabase.from('books_view').select('*');
-      console.log('Created base query');
 
       // Apply search filter
       if (debouncedSearchQuery) {
-        console.log('Applying search filter:', debouncedSearchQuery);
         query = query.or(`title.ilike.%${debouncedSearchQuery}%,authors.cs.{"${debouncedSearchQuery}"}`);
       }
 
       // Apply category filter
       if (filters.categories.length > 0) {
-        console.log('Applying category filter:', filters.categories);
         query = query.overlaps('categories', filters.categories);
       }
 
       // Apply level filter
       if (filters.levels.length > 0) {
-        console.log('Applying level filter:', filters.levels);
         query = query.in('level', filters.levels);
       }
 
       // Apply availability filter
       if (filters.availability === 'available') {
-        console.log('Applying availability filter: available');
         query = query.gt('available_count', 0);
       } else if (filters.availability === 'unavailable') {
-        console.log('Applying availability filter: unavailable');
         query = query.eq('available_count', 0);
       }
 
-      console.log('Executing query...');
       const { data, error } = await query.order('title');
-      console.log('Query result:', { data, error });
 
       if (error) {
-        console.error('Supabase error details:', error);
+        console.error('Error fetching books:', error);
         toast({
           title: "Error",
-          description: `Failed to load books: ${error.message}`,
+          description: "Failed to load books. Please try again.",
           variant: "destructive",
         });
         return;
       }
 
-      console.log('Setting books data:', data);
       setBooks(data || []);
     } catch (error) {
-      console.error('Catch block error:', error);
+      console.error('Error fetching books:', error);
       toast({
         title: "Error",
         description: "Failed to load books. Please try again.",
         variant: "destructive",
       });
     } finally {
-      console.log('fetchBooks completed');
       setLoading(false);
     }
   };
