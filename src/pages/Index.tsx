@@ -41,19 +41,27 @@ const Index = () => {
 
   const debouncedSearchQuery = useDebounce(searchQuery, 250);
 
-  // Realtime subscription for book availability updates
+  // Realtime subscription for book copies changes (affects availability)
   useRealtimeSubscription({
-    table: 'books_realtime_view',
+    table: 'copies',
     onUpdate: (payload) => {
-      console.log('Book availability updated:', payload);
-      fetchBooks(); // Refresh books when availability changes
+      console.log('Copy status updated:', payload);
+      fetchBooks();
+    },
+    onInsert: (payload) => {
+      console.log('Copy added:', payload);
+      fetchBooks();
+    },
+    onDelete: (payload) => {
+      console.log('Copy deleted:', payload);
+      fetchBooks();
     },
   });
 
   const fetchBooks = async () => {
     try {
       setLoading(true);
-      let query = (supabase as any).from('books_realtime_view').select('*');
+      let query = supabase.from('books_view').select('*');
 
       // Apply search filter
       if (debouncedSearchQuery) {

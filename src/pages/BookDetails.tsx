@@ -28,14 +28,8 @@ interface BookDetails {
   level: string;
   categories: string[];
   cover_path: string;
-  isbn?: string;
-  publisher?: string;
-  publication_year?: number;
-  edition?: string;
-  language?: string;
   available_count: number;
   total_copies: number;
-  created_at: string;
 }
 
 interface RelatedBook {
@@ -64,10 +58,10 @@ const BookDetails = () => {
   const fetchBookDetails = async () => {
     try {
       const { data, error } = await supabase
-        .from('books_realtime_view')
+        .from('books_view')
         .select('*')
         .eq('id', bookId)
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       setBook(data);
@@ -86,7 +80,7 @@ const BookDetails = () => {
   const fetchRelatedBooks = async () => {
     try {
       const { data, error } = await supabase
-        .from('books_realtime_view')
+        .from('books_view')
         .select('id, title, authors, cover_path, available_count')
         .neq('id', bookId)
         .limit(4);
@@ -276,61 +270,27 @@ const BookDetails = () => {
                 <CardTitle className="text-lg">Book Information</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                {book.isbn && (
-                  <div className="flex items-center gap-3">
-                    <Hash className="w-5 h-5 text-muted-foreground" />
-                    <div>
-                      <p className="font-medium">ISBN</p>
-                      <p className="text-sm text-muted-foreground">{book.isbn}</p>
-                    </div>
-                  </div>
-                )}
-
-                {book.publisher && (
-                  <div className="flex items-center gap-3">
-                    <Building className="w-5 h-5 text-muted-foreground" />
-                    <div>
-                      <p className="font-medium">Publisher</p>
-                      <p className="text-sm text-muted-foreground">{book.publisher}</p>
-                    </div>
-                  </div>
-                )}
-
-                {book.publication_year && (
-                  <div className="flex items-center gap-3">
-                    <Calendar className="w-5 h-5 text-muted-foreground" />
-                    <div>
-                      <p className="font-medium">Publication Year</p>
-                      <p className="text-sm text-muted-foreground">{book.publication_year}</p>
-                    </div>
-                  </div>
-                )}
-
-                {book.edition && (
-                  <div className="flex items-center gap-3">
-                    <Book className="w-5 h-5 text-muted-foreground" />
-                    <div>
-                      <p className="font-medium">Edition</p>
-                      <p className="text-sm text-muted-foreground">{book.edition}</p>
-                    </div>
-                  </div>
-                )}
-
                 <div className="flex items-center gap-3">
-                  <Globe className="w-5 h-5 text-muted-foreground" />
+                  <Book className="w-5 h-5 text-muted-foreground" />
                   <div>
-                    <p className="font-medium">Language</p>
-                    <p className="text-sm text-muted-foreground">{book.language}</p>
+                    <p className="font-medium">Level</p>
+                    <p className="text-sm text-muted-foreground">{book.level || 'Not specified'}</p>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <Clock className="w-5 h-5 text-muted-foreground" />
+                  <BookOpen className="w-5 h-5 text-muted-foreground" />
                   <div>
-                    <p className="font-medium">Added to Library</p>
-                    <p className="text-sm text-muted-foreground">
-                      {new Date(book.created_at).toLocaleDateString()}
-                    </p>
+                    <p className="font-medium">Total Copies</p>
+                    <p className="text-sm text-muted-foreground">{book.total_copies}</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <Users className="w-5 h-5 text-muted-foreground" />
+                  <div>
+                    <p className="font-medium">Available Copies</p>
+                    <p className="text-sm text-muted-foreground">{book.available_count}</p>
                   </div>
                 </div>
               </CardContent>

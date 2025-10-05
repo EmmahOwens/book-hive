@@ -20,7 +20,7 @@ export function useRealtimeSubscription({
   const [channel, setChannel] = useState<RealtimeChannel | null>(null);
 
   useEffect(() => {
-    const channelName = `realtime-${table}-${Date.now()}`;
+    const channelName = `realtime-${table}`;
     const realtimeChannel = supabase
       .channel(channelName)
       .on(
@@ -69,12 +69,10 @@ export function useRealtimeSubscription({
     setChannel(realtimeChannel);
 
     return () => {
-      if (realtimeChannel) {
-        console.log(`[Realtime] Unsubscribing from ${table}`);
-        supabase.removeChannel(realtimeChannel);
-      }
+      console.log(`[Realtime] Unsubscribing from ${table}`);
+      supabase.removeChannel(realtimeChannel);
     };
-  }, [table, filter, onInsert, onUpdate, onDelete]);
+  }, [table, filter]);
 
   return channel;
 }
