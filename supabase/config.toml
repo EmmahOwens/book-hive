@@ -3,6 +3,12 @@ project_id = "gkaaqbqzgdulzspdhupe"
 [functions.admin-check-password]
 verify_jwt = false
 
+[functions.admin-manage-book]
+verify_jwt = false
+
+[functions.admin-manage-copy]
+verify_jwt = false
+
 [functions.send-email]
 verify_jwt = false
 

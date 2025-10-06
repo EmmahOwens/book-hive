@@ -205,50 +205,47 @@ export function AdminBookManagement() {
     }
 
     try {
+      const adminToken = sessionStorage.getItem('admin_token');
+      if (!adminToken) {
+        toast({
+          title: "Error",
+          description: "Admin session expired. Please log in again.",
+          variant: "destructive",
+        });
+        return;
+      }
+
       const bookData = {
-        ...formData,
-        publication_year: formData.publication_year ? parseInt(formData.publication_year) : null,
+        title: formData.title,
+        authors: formData.authors,
+        description: formData.description,
+        isbn: formData.isbn,
+        publisher: formData.publisher,
+        publication_year: formData.publication_year,
+        edition: formData.edition,
+        language: formData.language,
+        level_id: formData.level_id,
+        categories: selectedCategories,
       };
 
-      if (editingBook) {
-        // Update existing book
-        const { error } = await supabase
-          .from('books')
-          .update(bookData)
-          .eq('id', editingBook.id);
+      const { data, error } = await supabase.functions.invoke('admin-manage-book', {
+        body: {
+          action: editingBook ? 'update' : 'create',
+          bookData,
+          bookId: editingBook?.id,
+        },
+        headers: {
+          Authorization: `Bearer ${adminToken}`,
+        }
+      });
 
-        if (error) throw error;
+      if (error) throw error;
+      if (!data?.success) throw new Error('Operation failed');
 
-        toast({
-          title: "Success",
-          description: "Book updated successfully!",
-        });
-      } else {
-        // Create new book
-        const { data: newBook, error } = await supabase
-          .from('books')
-          .insert([bookData])
-          .select()
-          .single();
-
-        if (error) throw error;
-
-        // Create initial copy
-        const { error: copyError } = await supabase
-          .from('copies')
-          .insert([{
-            book_id: newBook.id,
-            barcode: `BH-${Date.now()}`,
-            status: 'available',
-          }]);
-
-        if (copyError) throw copyError;
-
-        toast({
-          title: "Success",
-          description: "Book and initial copy added successfully!",
-        });
-      }
+      toast({
+        title: "Success",
+        description: editingBook ? "Book updated successfully!" : "Book and initial copy added successfully!",
+      });
 
       fetchBooks();
       setShowAddDialog(false);
@@ -289,29 +286,28 @@ export function AdminBookManagement() {
 
   const handleDelete = async (bookId: string) => {
     try {
-      // First delete all copies
-      const { error: copiesError } = await supabase
-        .from('copies')
-        .delete()
-        .eq('book_id', bookId);
+      const adminToken = sessionStorage.getItem('admin_token');
+      if (!adminToken) {
+        toast({
+          title: "Error",
+          description: "Admin session expired. Please log in again.",
+          variant: "destructive",
+        });
+        return;
+      }
 
-      if (copiesError) throw copiesError;
-
-      // Then delete book categories
-      const { error: categoriesError } = await supabase
-        .from('book_categories')
-        .delete()
-        .eq('book_id', bookId);
-
-      if (categoriesError) throw categoriesError;
-
-      // Finally delete the book
-      const { error } = await supabase
-        .from('books')
-        .delete()
-        .eq('id', bookId);
+      const { data, error } = await supabase.functions.invoke('admin-manage-book', {
+        body: {
+          action: 'delete',
+          bookId,
+        },
+        headers: {
+          Authorization: `Bearer ${adminToken}`,
+        }
+      });
 
       if (error) throw error;
+      if (!data?.success) throw new Error('Delete operation failed');
 
       toast({
         title: "Success",
@@ -331,15 +327,25 @@ export function AdminBookManagement() {
 
   const handleAddCopy = async (bookId: string) => {
     try {
-      const { error } = await supabase
-        .from('copies')
-        .insert([{
-          book_id: bookId,
-          barcode: `BH-${Date.now()}`,
-          status: 'available',
-        }]);
+      const adminToken = sessionStorage.getItem('admin_token');
+      if (!adminToken) {
+        toast({
+          title: "Error",
+          description: "Admin session expired. Please log in again.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      const { data, error } = await supabase.functions.invoke('admin-manage-copy', {
+        body: { bookId },
+        headers: {
+          Authorization: `Bearer ${adminToken}`,
+        }
+      });
 
       if (error) throw error;
+      if (!data?.success) throw new Error('Add copy operation failed');
 
       toast({
         title: "Success",
