@@ -62,17 +62,19 @@ serve(async (req) => {
       dueDate.setDate(dueDate.getDate() + borrowRequest.desired_duration_days);
 
       for (const item of requestedItems) {
+        const bookId = item.id || item.book_id;
+        
         // Find an available copy for this book
         const { data: availableCopy, error: copyError } = await supabase
           .from('copies')
           .select('id')
-          .eq('book_id', item.id)
+          .eq('book_id', bookId)
           .eq('status', 'available')
           .limit(1)
-          .single();
+          .maybeSingle();
 
         if (copyError || !availableCopy) {
-          console.warn(`No available copy found for book ${item.id}`);
+          console.warn(`No available copy found for book ${bookId}`);
           continue;
         }
 
@@ -143,6 +145,20 @@ serve(async (req) => {
         entity_id: requestId,
         details: {
           requester_name: borrowRequest.requester_name,
+        },
+      });
+
+      // Send rejection email
+      const requestedItems = Array.isArray(borrowRequest.requested_items)
+        ? borrowRequest.requested_items
+        : JSON.parse(borrowRequest.requested_items);
+
+      await supabase.functions.invoke('send-loan-rejection-email', {
+        body: {
+          borrowRequestId: requestId,
+          borrowerName: borrowRequest.requester_name,
+          borrowerEmail: borrowRequest.email,
+          bookTitle: requestedItems.map((item: any) => item.title).join(', '),
         },
       });
 

@@ -11,8 +11,6 @@ interface EmailRequest {
   borrowerEmail: string;
   borrowerName: string;
   bookTitle: string;
-  dueDate: string;
-  pickupLocation: string;
 }
 
 serve(async (req) => {
@@ -26,9 +24,7 @@ serve(async (req) => {
       borrowRequestId, 
       borrowerEmail, 
       borrowerName, 
-      bookTitle, 
-      dueDate, 
-      pickupLocation 
+      bookTitle
     }: EmailRequest = await req.json();
     
     // Initialize Supabase client
@@ -38,44 +34,32 @@ serve(async (req) => {
     );
 
     // Create email content
-    const emailSubject = 'Loan Request Approved - Book Hive';
+    const emailSubject = 'Loan Request Update - Book Hive';
     const emailHtml = `
       <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
         <div style="text-align: center; margin-bottom: 30px;">
           <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center;">
             <span style="color: white; font-size: 24px;">📚</span>
           </div>
-          <h1 style="color: #1f2937; margin: 0; font-size: 28px; font-weight: 600;">Loan Request Approved!</h1>
+          <h1 style="color: #1f2937; margin: 0; font-size: 28px; font-weight: 600;">Loan Request Update</h1>
         </div>
         
         <div style="background: #f8fafc; border-radius: 12px; padding: 24px; margin-bottom: 24px;">
           <h2 style="color: #374151; margin: 0 0 16px 0; font-size: 20px;">Hello ${borrowerName},</h2>
           <p style="color: #6b7280; margin: 0 0 16px 0; line-height: 1.6;">
-            Great news! Your request to borrow <strong>${bookTitle}</strong> has been approved by our library staff.
+            Thank you for your interest in borrowing <strong>${bookTitle}</strong> from our library.
+          </p>
+          <p style="color: #6b7280; margin: 0 0 16px 0; line-height: 1.6;">
+            We regret to inform you that your request could not be approved at this time. This may be due to high demand, unavailability, or other factors.
           </p>
         </div>
         
-        <div style="background: white; border: 2px solid #e5e7eb; border-radius: 12px; padding: 24px; margin-bottom: 24px;">
-          <h3 style="color: #374151; margin: 0 0 16px 0; font-size: 18px;">Loan Details</h3>
-          <ul style="list-style: none; padding: 0; margin: 0;">
-            <li style="padding: 8px 0; border-bottom: 1px solid #f3f4f6; color: #6b7280;">
-              <strong style="color: #374151;">Book:</strong> ${bookTitle}
-            </li>
-            <li style="padding: 8px 0; border-bottom: 1px solid #f3f4f6; color: #6b7280;">
-              <strong style="color: #374151;">Due Date:</strong> ${dueDate}
-            </li>
-            <li style="padding: 8px 0; color: #6b7280;">
-              <strong style="color: #374151;">Pickup Location:</strong> ${pickupLocation}
-            </li>
-          </ul>
-        </div>
-        
-        <div style="background: #fef3c7; border-radius: 12px; padding: 20px; margin-bottom: 24px;">
-          <h4 style="color: #92400e; margin: 0 0 12px 0; font-size: 16px;">⚠️ Important Reminders</h4>
-          <ul style="color: #92400e; margin: 0; padding-left: 20px; line-height: 1.6;">
-            <li>Please bring a valid ID when picking up your book</li>
-            <li>Return the book by the due date to avoid late fees</li>
-            <li>Handle the book with care and report any damage immediately</li>
+        <div style="background: #dbeafe; border-radius: 12px; padding: 20px; margin-bottom: 24px;">
+          <h4 style="color: #1e40af; margin: 0 0 12px 0; font-size: 16px;">💡 What You Can Do</h4>
+          <ul style="color: #1e40af; margin: 0; padding-left: 20px; line-height: 1.6;">
+            <li>Check back later - the book might become available soon</li>
+            <li>Contact our library staff for more information</li>
+            <li>Browse our catalog for similar books</li>
           </ul>
         </div>
         
@@ -89,7 +73,7 @@ serve(async (req) => {
     `;
 
     // Send email using Resend
-    console.log('Sending loan approval email:', { 
+    console.log('Sending loan rejection email:', { 
       to: borrowerEmail, 
       subject: emailSubject,
       borrowRequestId 
@@ -121,7 +105,7 @@ serve(async (req) => {
     // Log the email activity
     await supabase.from('activity_log').insert({
       actor: 'system',
-      action: 'Loan approval email sent',
+      action: 'Loan rejection email sent',
       entity_type: 'borrow_request',
       entity_id: borrowRequestId,
       details: {
@@ -137,7 +121,7 @@ serve(async (req) => {
       JSON.stringify({ 
         success: true, 
         email_id: emailData.id,
-        message: 'Loan approval email sent successfully' 
+        message: 'Loan rejection email sent successfully' 
       }),
       { 
         status: 200, 
@@ -146,12 +130,12 @@ serve(async (req) => {
     );
 
   } catch (error) {
-    console.error('Error in send-loan-approval-email function:', error);
+    console.error('Error in send-loan-rejection-email function:', error);
     
     return new Response(
       JSON.stringify({ 
         success: false, 
-        error: 'Failed to send loan approval email' 
+        error: 'Failed to send loan rejection email' 
       }),
       { 
         status: 500, 
