@@ -27,7 +27,7 @@ Book Hive is a modern, full-featured online library management system built for 
 Clone the repository and install dependencies:
 
 ```sh
-git clone https://github.com/EmmahOwens/book-hive256.git
+git clone https://github.com/EmmahOwens/book-hive.git
 cd book-hive256
 npm i
 ```
