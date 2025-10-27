@@ -1,4 +1,3 @@
-
 # Book Hive 
 
 Book Hive is a modern, full-featured online library management system built for seamless book lending, inventory management, and user engagement. Designed for both administrators and clients, it provides a beautiful, responsive interface and powerful tools for managing a digital library.
@@ -28,7 +27,7 @@ Clone the repository and install dependencies:
 
 ```sh
 git clone https://github.com/EmmahOwens/book-hive.git
-cd book-hive256
+cd book-hive
 npm i
 ```
 
