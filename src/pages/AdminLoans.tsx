@@ -142,17 +142,21 @@ export default function AdminLoans() {
 
         <div className="grid gap-6">
           {loans.length === 0 ? (
-            <Card className="bg-gradient-glass backdrop-blur-md border-border/50">
+            <Card className="bg-gradient-glass backdrop-blur-md border-border/50 animate-fade-in">
               <CardContent className="flex flex-col items-center justify-center py-12">
-                <BookOpen className="w-12 h-12 text-muted-foreground mb-4" />
+                <BookOpen className="w-12 h-12 text-muted-foreground mb-4 animate-pulse" />
                 <p className="text-lg text-muted-foreground">No active loans found</p>
               </CardContent>
             </Card>
           ) : (
-            loans.map((loan) => {
+            loans.map((loan, index) => {
               const dueDateInfo = getDueDateStatus(loan.due_date);
               return (
-                <Card key={loan.id} className="bg-gradient-glass backdrop-blur-md border-border/50 shadow-glass hover:shadow-glow transition-all duration-300">
+                <Card 
+                  key={loan.id} 
+                  className="bg-gradient-glass backdrop-blur-md border-border/50 shadow-glass hover:shadow-glow transition-all duration-300 animate-fade-in-up group"
+                  style={{animationDelay: `${index * 0.1}s`}}
+                >
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-4">
@@ -211,7 +215,7 @@ export default function AdminLoans() {
                     <div className="flex gap-2 pt-4">
                       <Button 
                         size="sm" 
-                        className="flex items-center gap-2"
+                        className="flex items-center gap-2 hover-lift"
                         onClick={() => handleLoanAction(loan.id, 'return')}
                       >
                         <BookOpen className="w-4 h-4" />
@@ -220,7 +224,7 @@ export default function AdminLoans() {
                       <Button 
                         size="sm" 
                         variant="outline" 
-                        className="flex items-center gap-2"
+                        className="flex items-center gap-2 hover-lift"
                         onClick={() => handleLoanAction(loan.id, 'renew')}
                       >
                         <RotateCcw className="w-4 h-4" />

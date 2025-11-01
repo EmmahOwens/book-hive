@@ -158,15 +158,19 @@ export default function AdminRequests() {
 
         <div className="grid gap-4 sm:gap-6">
           {requests.length === 0 ? (
-            <Card className="bg-gradient-glass backdrop-blur-md border-border/50">
+            <Card className="bg-gradient-glass backdrop-blur-md border-border/50 animate-fade-in">
               <CardContent className="flex flex-col items-center justify-center py-12">
-                <Clock className="w-12 h-12 text-muted-foreground mb-4" />
+                <Clock className="w-12 h-12 text-muted-foreground mb-4 animate-pulse" />
                 <p className="text-lg text-muted-foreground">No borrow requests found</p>
               </CardContent>
             </Card>
           ) : (
-            requests.map((request) => (
-              <Card key={request.id} className="bg-gradient-glass backdrop-blur-md border-border/50 shadow-glass hover:shadow-glow transition-all duration-300">
+            requests.map((request, index) => (
+              <Card 
+                key={request.id} 
+                className="bg-gradient-glass backdrop-blur-md border-border/50 shadow-glass hover:shadow-glow transition-all duration-300 animate-fade-in-up group"
+                style={{animationDelay: `${index * 0.1}s`}}
+              >
                 <CardHeader>
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div className="flex items-center gap-4">
@@ -242,7 +246,7 @@ export default function AdminRequests() {
                   )}
 
                   <div className="flex flex-col sm:flex-row gap-2 pt-4">
-                    <Button size="sm" className="flex items-center justify-center gap-2 w-full sm:w-auto">
+                    <Button size="sm" className="flex items-center justify-center gap-2 w-full sm:w-auto hover-lift">
                       <Eye className="w-4 h-4" />
                       View Details
                     </Button>
@@ -251,7 +255,7 @@ export default function AdminRequests() {
                         <Button 
                           size="sm" 
                           variant="default" 
-                          className="flex items-center justify-center gap-2 w-full sm:w-auto"
+                          className="flex items-center justify-center gap-2 w-full sm:w-auto hover-lift hover-glow"
                           onClick={() => handleRequestAction(request.id, 'approved')}
                         >
                           <CheckCircle className="w-4 h-4" />
@@ -260,7 +264,7 @@ export default function AdminRequests() {
                         <Button 
                           size="sm" 
                           variant="destructive" 
-                          className="flex items-center justify-center gap-2 w-full sm:w-auto"
+                          className="flex items-center justify-center gap-2 w-full sm:w-auto hover-lift"
                           onClick={() => handleRequestAction(request.id, 'rejected')}
                         >
                           <XCircle className="w-4 h-4" />

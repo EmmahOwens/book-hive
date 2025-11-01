@@ -329,15 +329,20 @@ export default function AdminDashboard() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1, duration: 0.5 }}
+              whileHover={{ scale: 1.03, y: -5 }}
             >
-              <Card className="bg-gradient-secondary shadow-neumorphic border-0 hover:shadow-glow transition-all duration-300">
+              <Card className="bg-gradient-secondary shadow-neumorphic border-0 hover:shadow-glow transition-all duration-300 group">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground">
                     {stat.title}
                   </CardTitle>
-                  <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-xl ${stat.bgColor} flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
+                  <motion.div 
+                    className={`w-8 h-8 sm:w-10 sm:h-10 rounded-xl ${stat.bgColor} flex items-center justify-center`}
+                    whileHover={{ scale: 1.2, rotate: 10 }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                  >
                     <stat.icon className={`w-4 h-4 sm:w-5 sm:h-5 ${stat.color}`} />
-                  </div>
+                  </motion.div>
                 </CardHeader>
                 <CardContent>
                   <div className="text-xl sm:text-2xl font-bold">
@@ -367,20 +372,27 @@ export default function AdminDashboard() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.7 + index * 0.1 }}
+              whileHover={{ scale: 1.05, y: -5 }}
+              whileTap={{ scale: 0.98 }}
             >
               <Card 
-                className={`${action.color} backdrop-blur-md border-0 shadow-neumorphic hover:shadow-glow transition-all duration-300 cursor-pointer hover:scale-105`}
+                className={`${action.color} backdrop-blur-md border-0 shadow-neumorphic hover:shadow-glow transition-all duration-300 cursor-pointer group`}
                 onClick={action.action}
               >
                 <CardHeader className="p-4 sm:p-6">
                   <div className="flex items-center justify-between">
-                    <CardTitle className="text-base sm:text-lg font-semibold text-card-foreground">
+                    <CardTitle className="text-base sm:text-lg font-semibold text-card-foreground group-hover:translate-x-1 transition-transform">
                       {action.title}
                     </CardTitle>
                     {action.count !== undefined && action.count > 0 && (
-                      <Badge className="bg-primary text-primary-foreground text-xs animate-pulse-glow">
-                        {action.count}
-                      </Badge>
+                      <motion.div
+                        animate={{ scale: [1, 1.1, 1] }}
+                        transition={{ repeat: Infinity, duration: 2 }}
+                      >
+                        <Badge className="bg-primary text-primary-foreground text-xs">
+                          {action.count}
+                        </Badge>
+                      </motion.div>
                     )}
                   </div>
                   <CardDescription className="text-card-foreground/80 text-xs sm:text-sm">

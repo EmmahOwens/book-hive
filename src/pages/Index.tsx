@@ -197,47 +197,40 @@ const Index = () => {
       <div className="container mx-auto px-6 py-8">
         {/* Welcome Hero Section */}
         <div className="relative overflow-hidden rounded-3xl mb-16">
-          {/* Background image overlay */}
-          <div className="absolute inset-0">
-            <img 
-              src="/lovable-uploads/d697e99f-b60c-4a40-8293-c219863d2e49.png"
-              alt="Cartoon children reading books"
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-hero opacity-85"></div>
-          </div>
+          {/* Pure gradient background without images */}
+          <div className="absolute inset-0 bg-gradient-hero"></div>
           <div className="absolute inset-0 bg-gradient-mesh"></div>
           
           {/* Content */}
           <div className="relative z-10 text-center py-32 px-8">
             <div className="animate-fade-in-up">
               {/* Logo */}
-              <div className="mb-8">
+              <div className="mb-8 animate-bounce-subtle">
                 <img 
                   src="/lovable-uploads/edb17c97-cd98-4e14-8d30-629ad18e76b0.png" 
                   alt="Book Hive Logo" 
-                  className="w-20 h-20 mx-auto object-contain opacity-90"
+                  className="w-20 h-20 mx-auto object-contain opacity-90 hover-wiggle cursor-pointer"
                 />
               </div>
-              <h1 className="headline-large text-white mb-6 animate-scale-in">
+              <h1 className="headline-large text-white mb-6 animate-zoom-in">
                 Welcome to
                 <br />
-                <span className="bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent animate-pulse-glow">
                   Book Hive
                 </span>
               </h1>
               <p className="body-large text-white/80 mb-8 max-w-2xl mx-auto animate-fade-in" style={{animationDelay: '0.2s'}}>
                 Your modern digital library experience. Browse our collection or manage library operations with ease.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in" style={{animationDelay: '0.4s'}}>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-slide-in-right" style={{animationDelay: '0.4s'}}>
                 <button 
-                  className="btn-primary hover-lift"
+                  className="btn-primary hover-lift hover-wiggle"
                   onClick={() => window.location.href = '/client'}
                 >
                   Browse Collection
                 </button>
                 <button 
-                  className="glass text-white px-6 py-3 rounded-full font-medium hover-lift"
+                  className="glass text-white px-6 py-3 rounded-full font-medium hover-lift hover-float"
                   onClick={() => window.location.href = '/admin/login'}
                 >
                   Librarian Portal
@@ -249,11 +242,13 @@ const Index = () => {
           {/* Floating elements for visual interest */}
           <div className="absolute top-20 left-20 w-32 h-32 bg-white/10 rounded-full blur-xl animate-float"></div>
           <div className="absolute bottom-20 right-20 w-40 h-40 bg-blue-300/10 rounded-full blur-xl animate-float" style={{animationDelay: '1s'}}></div>
+          <div className="absolute top-40 right-40 w-24 h-24 bg-purple-300/10 rounded-full blur-xl animate-float" style={{animationDelay: '2s'}}></div>
+          <div className="absolute bottom-40 left-40 w-36 h-36 bg-pink-300/10 rounded-full blur-xl animate-float" style={{animationDelay: '1.5s'}}></div>
         </div>
 
         {/* Search Section with Apple-style glass morphism */}
-        <div className="mb-12 relative">
-          <div className="glass rounded-3xl p-8 backdrop-blur-2xl">
+        <div className="mb-12 relative animate-fade-in-up" style={{animationDelay: '0.6s'}}>
+          <div className="glass rounded-3xl p-8 backdrop-blur-2xl hover-glow transition-all duration-500">
             <SearchBar
               value={searchQuery}
               onChange={setSearchQuery}
@@ -292,9 +287,9 @@ const Index = () => {
               </p>
             </div>
           ) : (
-            <div className="space-y-8">
+            <div className="space-y-8 animate-fade-in-up">
               {/* Results header with Apple-style typography */}
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between animate-slide-in-left">
                 <div>
                   <h2 className="headline-medium text-3xl mb-2">
                     Featured Books
