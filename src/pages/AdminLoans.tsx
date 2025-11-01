@@ -84,6 +84,38 @@ export default function AdminLoans() {
     }
   };
 
+  const handleLoanAction = async (loanId: string, action: 'return' | 'renew') => {
+    try {
+      const { data, error } = await supabase.functions.invoke('admin-manage-loan', {
+        body: {
+          loanId,
+          action,
+          adminEmail: sessionStorage.getItem('admin_email') || 'admin'
+        }
+      });
+
+      if (error) throw error;
+
+      if (!data?.success) {
+        throw new Error(data?.error || `Failed to ${action} loan`);
+      }
+
+      fetchLoans();
+
+      toast({
+        title: "Success",
+        description: `Loan ${action === 'return' ? 'returned' : 'renewed'} successfully`,
+      });
+    } catch (error: any) {
+      console.error(`Error ${action}ing loan:`, error);
+      toast({
+        title: "Error",
+        description: error.message || `Failed to ${action} loan`,
+        variant: "destructive",
+      });
+    }
+  };
+
   if (isLoading) {
     return (
       <BookHiveLayout>
@@ -177,11 +209,20 @@ export default function AdminLoans() {
                     )}
 
                     <div className="flex gap-2 pt-4">
-                      <Button size="sm" className="flex items-center gap-2">
+                      <Button 
+                        size="sm" 
+                        className="flex items-center gap-2"
+                        onClick={() => handleLoanAction(loan.id, 'return')}
+                      >
                         <BookOpen className="w-4 h-4" />
                         Return Book
                       </Button>
-                      <Button size="sm" variant="outline" className="flex items-center gap-2">
+                      <Button 
+                        size="sm" 
+                        variant="outline" 
+                        className="flex items-center gap-2"
+                        onClick={() => handleLoanAction(loan.id, 'renew')}
+                      >
                         <RotateCcw className="w-4 h-4" />
                         Renew Loan
                       </Button>
