@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { BorrowModal } from "@/components/BorrowModal";
+import { BouncingBookLoader } from "@/components/BouncingBookLoader";
 import { 
   ArrowLeft, 
   Book, 
@@ -126,10 +127,7 @@ const BookDetails = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading book details...</p>
-        </div>
+        <BouncingBookLoader text="Loading book details..." />
       </div>
     );
   }

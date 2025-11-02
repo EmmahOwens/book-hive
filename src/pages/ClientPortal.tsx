@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { SimpleSearchBar } from "@/components/SimpleSearchBar";
 import { BookCard } from "@/components/BookCard";
-import { BookCardSkeleton } from "@/components/BookCardSkeleton";
+import { BouncingBookLoader } from "@/components/BouncingBookLoader";
 import { BorrowModal } from "@/components/BorrowModal";
 import { LibraryStats } from "@/components/LibraryStats";
 import { CategoryCard } from "@/components/CategoryCard";
@@ -352,11 +352,7 @@ const ClientPortal = () => {
           )}
 
           {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-8">
-              {[...Array(6)].map((_, i) => (
-                <BookCardSkeleton key={i} />
-              ))}
-            </div>
+            <BouncingBookLoader text="Loading your books..." />
           ) : books.length === 0 ? (
             <div className="text-center py-24">
               <div className="relative inline-block mb-8">

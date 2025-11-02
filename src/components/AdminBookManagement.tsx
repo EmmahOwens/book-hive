@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { useRealtimeSubscription } from "@/hooks/useRealtimeSubscription";
+import { BouncingBookLoader } from "@/components/BouncingBookLoader";
 import { 
   Plus, 
   Edit, 
@@ -577,10 +578,7 @@ export function AdminBookManagement() {
         </CardHeader>
         <CardContent>
           {loading ? (
-            <div className="text-center py-8">
-              <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-              <p>Loading books...</p>
-            </div>
+            <BouncingBookLoader text="Loading books..." />
           ) : filteredBooks.length === 0 ? (
             <div className="text-center py-8">
               <Book className="w-12 h-12 text-muted-foreground mx-auto mb-4" />

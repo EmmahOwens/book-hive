@@ -8,6 +8,7 @@ import { useRealtimeSubscription } from "@/hooks/useRealtimeSubscription";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { Loader2, BookOpen } from "lucide-react";
+import { BouncingBookLoader } from "@/components/BouncingBookLoader";
 
 interface Book {
   id: string;
@@ -263,13 +264,7 @@ const Index = () => {
         {/* Apple-style Books Grid Section */}
         <section className="relative">
           {loading ? (
-            <div className="flex flex-col items-center justify-center py-24">
-              <div className="relative">
-                <div className="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
-                <div className="absolute inset-0 w-16 h-16 border-4 border-transparent border-t-primary/60 rounded-full animate-spin" style={{animationDirection: 'reverse', animationDuration: '1s'}}></div>
-              </div>
-              <p className="mt-6 text-muted-foreground font-medium">Loading your books...</p>
-            </div>
+            <BouncingBookLoader text="Loading your books..." />
           ) : books.length === 0 ? (
             <div className="text-center py-24">
               <div className="relative inline-block mb-8">
