@@ -218,6 +218,39 @@
     transform: translateY(-2px);
   }
 
+  /* 3D Card transforms */
+  .card-3d {
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease;
+  }
+  
+  .card-3d:hover {
+    transform: translateZ(20px);
+  }
+  
+  /* Magnetic hover effect */
+  .magnetic {
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* Ripple effect */
+  @keyframes ripple {
+    to {
+      transform: scale(4);
+      opacity: 0;
+    }
+  }
+  
+  .ripple {
+    position: absolute;
+    border-radius: 50%;
+    background-color: hsl(var(--primary) / 0.3);
+    width: 20px;
+    height: 20px;
+    animation: ripple 0.6s ease-out;
+    pointer-events: none;
+  }
+
   /* Smooth scrollbar */
   ::-webkit-scrollbar {
     width: 10px;
@@ -236,6 +269,21 @@
 
   ::-webkit-scrollbar-thumb:hover {
     background: hsl(var(--primary) / 0.7);
+  }
+  
+  /* Gradient animation */
+  @keyframes gradient-shift {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+  
+  .animate-gradient {
+    background-size: 200% 200%;
+    animation: gradient-shift 10s ease infinite;
   }
 
   /* Loading shimmer effect */

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Clock, CheckCircle, XCircle, Eye, User, Phone, Mail } from "lucide-react";
 import { BookHiveLayout } from "@/components/BookHiveLayout";
 import { BouncingBookLoader } from "@/components/BouncingBookLoader";
+import { Confetti } from "@/components/Confetti";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -33,6 +34,7 @@ interface BorrowRequest {
 export default function AdminRequests() {
   const [requests, setRequests] = useState<BorrowRequest[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [showConfetti, setShowConfetti] = useState(false);
   const navigate = useNavigate();
   const { showNotification } = useNotification();
 
@@ -107,6 +109,11 @@ export default function AdminRequests() {
       // Refresh requests list
       fetchRequests();
 
+      // Show confetti on approval
+      if (status === 'approved') {
+        setShowConfetti(true);
+      }
+
       showNotification(
         'success',
         `Request ${status === 'approved' ? 'Approved' : 'Rejected'}!`,
@@ -145,6 +152,7 @@ export default function AdminRequests() {
 
   return (
     <BookHiveLayout>
+      <Confetti active={showConfetti} />
       <div className="container mx-auto p-4 sm:p-6 space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>

@@ -5,6 +5,8 @@ import { BouncingBookLoader } from "@/components/BouncingBookLoader";
 import { BorrowModal } from "@/components/BorrowModal";
 import { LibraryStats } from "@/components/LibraryStats";
 import { CategoryCard } from "@/components/CategoryCard";
+import { ParticleBackground } from "@/components/ParticleBackground";
+import { AnimatedBlob } from "@/components/AnimatedBlob";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useRealtimeSubscription } from "@/hooks/useRealtimeSubscription";
 import { supabase } from "@/integrations/supabase/client";
@@ -239,29 +241,46 @@ const ClientPortal = () => {
               alt="Person reading in library"
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-hero opacity-85"></div>
+            <div className="absolute inset-0 bg-gradient-hero opacity-85 animate-gradient"></div>
           </div>
           <div className="absolute inset-0 bg-gradient-mesh"></div>
           
+          {/* Particle effects */}
+          <ParticleBackground />
+          
+          {/* Animated blobs */}
+          <AnimatedBlob className="w-64 h-64 bg-primary/10 top-0 -left-8" delay={0} />
+          <AnimatedBlob className="w-80 h-80 bg-purple-400/10 bottom-0 -right-8" delay={2} />
+          
           {/* Content */}
           <div className="relative z-10 text-center py-16 sm:py-24 lg:py-32 px-4 sm:px-8">
-            <div className="animate-fade-in-up">
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-4 sm:mb-6 animate-scale-in leading-tight">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              <motion.h1 
+                className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-4 sm:mb-6 leading-tight"
+                initial={{ scale: 0.9 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+              >
                 Discover Your Next
                 <br />
                 <span className="bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
                   Great Read
                 </span>
-              </h1>
-              <p className="text-base sm:text-lg lg:text-xl text-white/80 mb-6 sm:mb-8 max-w-2xl mx-auto animate-fade-in" style={{animationDelay: '0.2s'}}>
+              </motion.h1>
+              <motion.p 
+                className="text-base sm:text-lg lg:text-xl text-white/80 mb-6 sm:mb-8 max-w-2xl mx-auto"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+              >
                 Explore our curated collection of academic and reference books with our modern, intuitive browsing experience
-              </p>
-            </div>
+              </motion.p>
+            </motion.div>
           </div>
-          
-          {/* Floating elements for visual interest - hidden on mobile */}
-          <div className="absolute top-20 left-20 w-32 h-32 bg-white/10 rounded-full blur-xl animate-float hidden lg:block"></div>
-          <div className="absolute bottom-20 right-20 w-40 h-40 bg-blue-300/10 rounded-full blur-xl animate-float hidden lg:block" style={{animationDelay: '1s'}}></div>
         </div>
 
         {/* Library Stats */}

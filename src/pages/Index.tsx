@@ -5,10 +5,14 @@ import { BookCard } from "@/components/BookCard";
 import { BorrowModal } from "@/components/BorrowModal";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useRealtimeSubscription } from "@/hooks/useRealtimeSubscription";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { Loader2, BookOpen } from "lucide-react";
 import { BouncingBookLoader } from "@/components/BouncingBookLoader";
+import { ParticleBackground } from "@/components/ParticleBackground";
+import { AnimatedBlob } from "@/components/AnimatedBlob";
+import { motion } from "framer-motion";
 
 interface Book {
   id: string;
@@ -198,66 +202,110 @@ const Index = () => {
       <div className="container mx-auto px-6 py-8">
         {/* Welcome Hero Section */}
         <div className="relative overflow-hidden rounded-3xl mb-16">
-          {/* Pure gradient background without images */}
-          <div className="absolute inset-0 bg-gradient-hero"></div>
+          {/* Animated gradient background */}
+          <div className="absolute inset-0 bg-gradient-hero animate-gradient"></div>
           <div className="absolute inset-0 bg-gradient-mesh"></div>
+          
+          {/* Particle effects */}
+          <ParticleBackground />
+          
+          {/* Animated blobs */}
+          <AnimatedBlob className="w-72 h-72 bg-primary/20 top-0 -left-12" delay={0} />
+          <AnimatedBlob className="w-96 h-96 bg-purple-400/20 bottom-0 -right-12" delay={2} />
+          <AnimatedBlob className="w-80 h-80 bg-blue-400/20 top-1/2 left-1/2" delay={4} />
           
           {/* Content */}
           <div className="relative z-10 text-center py-32 px-8">
-            <div className="animate-fade-in-up">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+            >
               {/* Logo */}
-              <div className="mb-8 animate-bounce-subtle">
+              <motion.div 
+                className="mb-8"
+                whileHover={{ scale: 1.1, rotate: 5 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
                 <img 
                   src="/lovable-uploads/edb17c97-cd98-4e14-8d30-629ad18e76b0.png" 
                   alt="Book Hive Logo" 
-                  className="w-20 h-20 mx-auto object-contain opacity-90 hover-wiggle cursor-pointer"
+                  className="w-20 h-20 mx-auto object-contain opacity-90 cursor-pointer"
                 />
-              </div>
-              <h1 className="headline-large text-white mb-6 animate-zoom-in">
+              </motion.div>
+              
+              <motion.h1 
+                className="headline-large text-white mb-6"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+              >
                 Welcome to
                 <br />
-                <span className="bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent animate-pulse-glow">
+                <span className="bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
                   Book Hive
                 </span>
-              </h1>
-              <p className="body-large text-white/80 mb-8 max-w-2xl mx-auto animate-fade-in" style={{animationDelay: '0.2s'}}>
+              </motion.h1>
+              
+              <motion.p 
+                className="body-large text-white/80 mb-8 max-w-2xl mx-auto"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+              >
                 Your modern digital library experience. Browse our collection or manage library operations with ease.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-slide-in-right" style={{animationDelay: '0.4s'}}>
-                <button 
-                  className="btn-primary hover-lift hover-wiggle"
+              </motion.p>
+              
+              <motion.div 
+                className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.6 }}
+              >
+                <motion.button 
+                  className="btn-primary"
                   onClick={() => window.location.href = '/client'}
+                  whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(14, 165, 233, 0.5)" }}
+                  whileTap={{ scale: 0.95 }}
                 >
                   Browse Collection
-                </button>
-                <button 
-                  className="glass text-white px-6 py-3 rounded-full font-medium hover-lift hover-float"
+                </motion.button>
+                <motion.button 
+                  className="glass text-white px-6 py-3 rounded-full font-medium"
                   onClick={() => window.location.href = '/admin/login'}
+                  whileHover={{ scale: 1.05, backgroundColor: "rgba(255, 255, 255, 0.2)" }}
+                  whileTap={{ scale: 0.95 }}
                 >
                   Librarian Portal
-                </button>
-              </div>
-            </div>
+                </motion.button>
+              </motion.div>
+            </motion.div>
           </div>
-          
-          {/* Floating elements for visual interest */}
-          <div className="absolute top-20 left-20 w-32 h-32 bg-white/10 rounded-full blur-xl animate-float"></div>
-          <div className="absolute bottom-20 right-20 w-40 h-40 bg-blue-300/10 rounded-full blur-xl animate-float" style={{animationDelay: '1s'}}></div>
-          <div className="absolute top-40 right-40 w-24 h-24 bg-purple-300/10 rounded-full blur-xl animate-float" style={{animationDelay: '2s'}}></div>
-          <div className="absolute bottom-40 left-40 w-36 h-36 bg-pink-300/10 rounded-full blur-xl animate-float" style={{animationDelay: '1.5s'}}></div>
         </div>
 
         {/* Search Section with Apple-style glass morphism */}
-        <div className="mb-12 relative animate-fade-in-up" style={{animationDelay: '0.6s'}}>
-          <div className="glass rounded-3xl p-8 backdrop-blur-2xl hover-glow transition-all duration-500">
+        <motion.div 
+          className="mb-12 relative"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+        >
+          <motion.div 
+            className="glass rounded-3xl p-8 backdrop-blur-2xl"
+            whileHover={{ 
+              boxShadow: "0 0 40px rgba(14, 165, 233, 0.3)",
+              y: -2 
+            }}
+            transition={{ duration: 0.3 }}
+          >
             <SearchBar
               value={searchQuery}
               onChange={setSearchQuery}
               filters={filters}
               onFiltersChange={setFilters}
             />
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         {/* Results Section - Removed as it's now integrated into the main section */}
 
@@ -298,13 +346,16 @@ const Index = () => {
               {/* Staggered grid animation */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {books.map((book, index) => (
-                  <div 
+                  <motion.div 
                     key={book.id}
-                    className="animate-fade-in-up"
-                    style={{ 
-                      animationDelay: `${index * 0.1}s`,
-                      animationFillMode: 'both'
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ 
+                      duration: 0.5, 
+                      delay: index * 0.1,
+                      ease: "easeOut"
                     }}
+                    whileHover={{ y: -8 }}
                   >
                     <BookCard
                       id={book.id}
@@ -319,7 +370,7 @@ const Index = () => {
                       onBorrow={handleBorrowBook}
                       onViewDetails={handleViewBookDetails}
                     />
-                  </div>
+                  </motion.div>
                 ))}
               </div>
             </div>
