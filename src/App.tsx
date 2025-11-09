@@ -3,6 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { ThemeProvider } from "next-themes";
 import { NotificationProvider } from "@/hooks/useNotification";
 import { NotificationDialog } from "@/components/NotificationDialog";
 import Index from "./pages/Index";
@@ -22,12 +23,13 @@ const queryClient = new QueryClient();
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <NotificationProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <NotificationDialog />
-          <BrowserRouter>
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <NotificationProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <NotificationDialog />
+            <BrowserRouter>
             <Routes>
               <Route path="/" element={<Navigate to="/client" replace />} />
               <Route path="/home" element={<Index />} />
@@ -48,6 +50,7 @@ const App = () => {
           </BrowserRouter>
         </TooltipProvider>
       </NotificationProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 };

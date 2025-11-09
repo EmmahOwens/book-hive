@@ -10,6 +10,7 @@ import {
   AlertTriangle
 } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import {
   Sidebar,
   SidebarContent,
@@ -104,6 +105,11 @@ export function AppSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+
+        {/* Theme Toggle at Bottom */}
+        <div className="mt-auto pt-4 border-t border-border/50">
+          <ThemeToggle variant="sidebar" showLabel={open} />
+        </div>
       </SidebarContent>
     </Sidebar>
   );

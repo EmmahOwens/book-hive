@@ -1,7 +1,8 @@
-import { Book, User } from "lucide-react";
+import { User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useLocation } from "react-router-dom";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 interface HeaderProps {
   showSidebarTrigger?: boolean;
@@ -35,8 +36,9 @@ export function Header({ showSidebarTrigger = false }: HeaderProps) {
       </div>
 
       <div className="flex items-center gap-2 animate-fade-in" style={{animationDelay: '0.2s'}}>
+        <ThemeToggle />
         {!isAdminRoute && (
-          <Button variant="outline" size="sm" className="shadow-neumorphic hover-lift">
+          <Button variant="outline" size="sm" className="glass-interactive hover-lift">
             <User className="w-4 h-4 mr-2" />
             My Account
           </Button>
