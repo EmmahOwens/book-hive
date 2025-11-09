@@ -12,11 +12,11 @@ export function Header({ showSidebarTrigger = false }: HeaderProps) {
   const isAdminRoute = location.pathname.includes('/admin');
 
   return (
-    <header className="h-16 flex items-center justify-between px-6 border-b bg-card/50 backdrop-blur-md border-border/50 animate-slide-in">
+    <header className="h-16 flex items-center justify-between px-6 border-b glass-primary animate-slide-in sticky top-0 z-50">
       <div className="flex items-center gap-4">
         {showSidebarTrigger && <SidebarTrigger className="lg:hidden" />}
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-sm flex items-center justify-center shadow-neumorphic hover-wiggle cursor-pointer group">
+          <div className="w-10 h-10 rounded-xl glass-secondary flex items-center justify-center hover-wiggle cursor-pointer group">
             <img 
               src="/lovable-uploads/edb17c97-cd98-4e14-8d30-629ad18e76b0.png" 
               alt="Book Hive Logo" 

@@ -54,14 +54,14 @@ export function AppSidebar() {
 
   return (
     <Sidebar
-      className={`${!open ? "w-14" : "w-64"} border-r bg-card/30 backdrop-blur-md border-border/50`}
+      className={`${!open ? "w-14" : "w-64"} border-r glass-primary`}
       collapsible="icon"
     >
       <SidebarContent className="p-4">
         {/* Logo Section */}
         {open && (
           <div className="flex items-center gap-3 mb-6 px-2">
-            <div className="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-sm flex items-center justify-center shadow-neumorphic">
+            <div className="w-10 h-10 rounded-xl glass-secondary flex items-center justify-center">
               <img 
                 src="/lovable-uploads/edb17c97-cd98-4e14-8d30-629ad18e76b0.png" 
                 alt="Book Hive Logo" 

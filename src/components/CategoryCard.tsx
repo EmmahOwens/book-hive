@@ -27,7 +27,7 @@ export const CategoryCard = ({
     >
       <Card
         onClick={onClick}
-        className={`${gradient} cursor-pointer border-0 shadow-apple-lg hover:shadow-apple-xl transition-all duration-300 backdrop-blur-md overflow-hidden group`}
+        className={`${gradient} cursor-pointer border-0 glass-interactive overflow-hidden group`}
       >
         <div className="p-6 relative">
           {/* Background decoration */}

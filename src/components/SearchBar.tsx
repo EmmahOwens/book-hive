@@ -106,10 +106,10 @@ export function SearchBar({
       {/* Main Search Input */}
       <div className="relative">
         <div className={`
-          flex items-center bg-card/80 backdrop-blur-md rounded-xl sm:rounded-2xl border-2 transition-all duration-300
+          flex items-center glass-interactive rounded-xl sm:rounded-2xl border-2 transition-all duration-300
           ${isFocused 
             ? 'border-primary shadow-glow' 
-            : 'border-border/50 shadow-neumorphic'
+            : 'border-transparent'
           }
         `}>
           <div className="pl-4 sm:pl-6 pr-3">
@@ -158,7 +158,7 @@ export function SearchBar({
                 </Button>
               </DropdownMenuTrigger>
               
-              <DropdownMenuContent className="w-80 bg-card/95 backdrop-blur-md border-border/50 shadow-glass">
+              <DropdownMenuContent className="w-80 glass-primary shadow-2xl">
                 <div className="flex items-center justify-between p-2">
                   <DropdownMenuLabel>Filter Options</DropdownMenuLabel>
                   {activeFilterCount > 0 && (

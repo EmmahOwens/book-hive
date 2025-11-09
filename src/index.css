@@ -129,13 +129,28 @@
 @layer components {
   /* Apple-style glass morphism */
   .glass {
-    @apply backdrop-blur-xl bg-white/20 border border-white/20;
-    background: var(--gradient-glass);
-    box-shadow: var(--shadow-lg);
+    @apply backdrop-blur-xl bg-white/70 dark:bg-black/40 border border-white/20 dark:border-white/10;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
   }
   
-  .glass-dark {
-    @apply backdrop-blur-xl bg-black/20 border border-white/10;
+  .glass-primary {
+    @apply backdrop-blur-2xl bg-white/80 dark:bg-black/50 border border-white/30 dark:border-white/20;
+    box-shadow: 0 8px 32px 0 rgba(102, 126, 234, 0.2), inset 0 1px 1px 0 rgba(255, 255, 255, 0.3);
+  }
+  
+  .glass-secondary {
+    @apply backdrop-blur-xl bg-white/50 dark:bg-black/30 border border-white/20 dark:border-white/10;
+    box-shadow: 0 4px 24px 0 rgba(31, 38, 135, 0.1);
+  }
+  
+  .glass-interactive {
+    @apply backdrop-blur-xl bg-white/60 dark:bg-black/40 border border-white/20 dark:border-white/10;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .glass-interactive:hover {
+    @apply bg-white/80 dark:bg-black/60;
+    box-shadow: 0 12px 40px 0 rgba(102, 126, 234, 0.25), inset 0 1px 1px 0 rgba(255, 255, 255, 0.4);
   }
   
   /* Apple-style buttons */

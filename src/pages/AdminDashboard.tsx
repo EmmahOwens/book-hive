@@ -331,7 +331,7 @@ export default function AdminDashboard() {
               transition={{ delay: index * 0.1, duration: 0.5 }}
               whileHover={{ scale: 1.03, y: -5 }}
             >
-              <Card className="bg-gradient-secondary shadow-neumorphic border-0 hover:shadow-glow transition-all duration-300 group">
+              <Card className="glass-interactive hover:shadow-glow transition-all duration-300 group">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground">
                     {stat.title}
@@ -376,7 +376,7 @@ export default function AdminDashboard() {
               whileTap={{ scale: 0.98 }}
             >
               <Card 
-                className={`${action.color} backdrop-blur-md border-0 shadow-neumorphic hover:shadow-glow transition-all duration-300 cursor-pointer group`}
+                className={`${action.color} glass-interactive hover:shadow-glow transition-all duration-300 cursor-pointer group`}
                 onClick={action.action}
               >
                 <CardHeader className="p-4 sm:p-6">
@@ -410,7 +410,7 @@ export default function AdminDashboard() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.1, duration: 0.5 }}
         >
-          <Card className="glass backdrop-blur-md border-border/50 shadow-glass">
+          <Card className="glass-primary shadow-2xl">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <TrendingUp className="w-5 h-5 text-primary" />
@@ -433,7 +433,7 @@ export default function AdminDashboard() {
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 1.2 + index * 0.05 }}
-                      className="flex items-center justify-between p-3 bg-card/50 rounded-xl border border-border/50 hover:bg-card/80 transition-colors duration-300"
+                      className="flex items-center justify-between p-3 glass-secondary rounded-xl hover:bg-white/90 dark:hover:bg-black/60 transition-colors duration-300"
                     >
                       <div>
                         <p className="font-medium text-card-foreground">
@@ -460,7 +460,7 @@ export default function AdminDashboard() {
         </motion.div>
 
         {/* Reading Community Insights */}
-        <Card className="bg-gradient-secondary backdrop-blur-md border-0 shadow-neumorphic">
+        <Card className="glass-primary shadow-2xl">
           <CardHeader>
             <CardTitle className="text-xl font-bold">Reading Community Insights</CardTitle>
             <CardDescription>

@@ -42,7 +42,7 @@ export const BookCard = ({
     >
       <Card 
         ref={ref as any}
-        className={`group transition-all duration-700 ease-apple backdrop-blur-xl bg-white/60 dark:bg-black/40 border border-white/20 dark:border-white/10 shadow-apple-lg hover:shadow-apple-xl rounded-2xl overflow-hidden ${
+        className={`group glass-interactive rounded-2xl overflow-hidden transition-all duration-700 ${
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
         }`}
       >
@@ -109,7 +109,7 @@ export const BookCard = ({
         </div>
         
         {/* Availability Info with Apple-style icons */}
-        <div className="flex items-center justify-between text-xs sm:text-sm bg-muted/30 rounded-xl p-2 sm:p-3">
+        <div className="flex items-center justify-between text-xs sm:text-sm glass-secondary rounded-xl p-2 sm:p-3">
           <div className="flex items-center gap-1 sm:gap-2 text-muted-foreground">
             <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-secondary/50 flex items-center justify-center">
               <Users className="w-3 h-3 sm:w-4 sm:h-4" />

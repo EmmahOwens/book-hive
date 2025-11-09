@@ -52,7 +52,7 @@ export const LibraryStats = ({
       {stats.map((stat, index) => (
         <Card
           key={stat.label}
-          className="glass border-0 shadow-apple-md hover:shadow-apple-lg transition-all duration-300 animate-fade-in-up"
+          className="glass-interactive animate-fade-in-up hover:-translate-y-1"
           style={{
             animationDelay: `${index * 0.1}s`,
             animationFillMode: 'both'
