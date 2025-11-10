@@ -54,7 +54,12 @@ export function AppSidebar() {
 
   return (
     <Sidebar
-      className={`${!open ? "w-14" : "w-64"} border-r glass-primary`}
+      className={`${!open ? "w-14" : "w-64"} border-r backdrop-blur-2xl`}
+      style={{
+        background: 'rgba(255, 255, 255, 0.8)',
+        borderColor: 'rgba(255, 255, 255, 0.3)',
+        boxShadow: '0 0 40px rgba(99, 102, 241, 0.1)',
+      }}
       collapsible="icon"
     >
       <SidebarContent className="p-4">

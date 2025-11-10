@@ -22,6 +22,7 @@ export const LibraryStats = ({
       label: "Books Available",
       color: "text-primary",
       bgColor: "bg-primary/10",
+      glowClass: "glass-glow-primary",
     },
     {
       icon: Users,
@@ -29,6 +30,7 @@ export const LibraryStats = ({
       label: "Active Readers",
       color: "text-success",
       bgColor: "bg-success/10",
+      glowClass: "glass-glow-success",
     },
     {
       icon: TrendingUp,
@@ -36,6 +38,7 @@ export const LibraryStats = ({
       label: "Current Loans",
       color: "text-info",
       bgColor: "bg-info/10",
+      glowClass: "glass-glow-info",
     },
     {
       icon: Clock,
@@ -43,6 +46,7 @@ export const LibraryStats = ({
       label: "Avg. Days",
       color: "text-warning",
       bgColor: "bg-warning/10",
+      glowClass: "glass-glow-warning",
       suffix: "d",
     },
   ];
@@ -52,15 +56,15 @@ export const LibraryStats = ({
       {stats.map((stat, index) => (
         <Card
           key={stat.label}
-          className="glass-interactive animate-fade-in-up hover:-translate-y-1"
+          className={`glass-interactive ${stat.glowClass} animate-fade-in-up hover:-translate-y-2`}
           style={{
             animationDelay: `${index * 0.1}s`,
             animationFillMode: 'both'
           }}
         >
-          <div className="p-4 sm:p-6">
-            <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl ${stat.bgColor} flex items-center justify-center mb-3 sm:mb-4`}>
-              <stat.icon className={`w-5 h-5 sm:w-6 sm:h-6 ${stat.color}`} />
+          <div className="p-4 sm:p-6 relative">
+            <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl ${stat.bgColor} flex items-center justify-center mb-3 sm:mb-4 shadow-lg backdrop-blur-sm`}>
+              <stat.icon className={`w-5 h-5 sm:w-6 sm:h-6 ${stat.color} drop-shadow-lg`} />
             </div>
             <div className="text-2xl sm:text-3xl font-bold mb-1">
               <AnimatedCounter end={stat.value} suffix={stat.suffix} />

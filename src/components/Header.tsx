@@ -12,7 +12,14 @@ export function Header({ showSidebarTrigger = false }: HeaderProps) {
   const isAdminRoute = location.pathname.includes('/admin');
 
   return (
-    <header className="h-16 flex items-center justify-between px-6 border-b glass-primary animate-slide-in sticky top-0 z-50">
+    <header 
+      className="h-16 flex items-center justify-between px-6 border-b animate-slide-in sticky top-0 z-50 backdrop-blur-2xl"
+      style={{
+        background: 'rgba(255, 255, 255, 0.85)',
+        borderColor: 'rgba(255, 255, 255, 0.3)',
+        boxShadow: '0 4px 24px rgba(31, 38, 135, 0.1), 0 0 20px rgba(99, 102, 241, 0.05)',
+      }}
+    >
       <div className="flex items-center gap-4">
         {showSidebarTrigger && <SidebarTrigger className="lg:hidden" />}
         <div className="flex items-center gap-3">

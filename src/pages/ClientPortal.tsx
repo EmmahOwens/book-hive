@@ -7,6 +7,7 @@ import { LibraryStats } from "@/components/LibraryStats";
 import { CategoryCard } from "@/components/CategoryCard";
 import { ParticleBackground } from "@/components/ParticleBackground";
 import { AnimatedBlob } from "@/components/AnimatedBlob";
+import { GlassBackground } from "@/components/GlassBackground";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useRealtimeSubscription } from "@/hooks/useRealtimeSubscription";
 import { supabase } from "@/integrations/supabase/client";
@@ -189,9 +190,14 @@ const ClientPortal = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative">
+      <GlassBackground />
       {/* Client Header */}
-      <header className="h-16 flex items-center justify-between px-4 sm:px-6 border-b bg-card/50 backdrop-blur-md border-border/50">
+      <header className="h-16 flex items-center justify-between px-4 sm:px-6 border-b backdrop-blur-2xl border-border/50 relative z-10" style={{
+        background: 'rgba(255, 255, 255, 0.85)',
+        borderColor: 'rgba(255, 255, 255, 0.3)',
+        boxShadow: '0 4px 24px rgba(31, 38, 135, 0.1), 0 0 20px rgba(99, 102, 241, 0.05)',
+      }}>
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-white/10 backdrop-blur-sm flex items-center justify-center shadow-neumorphic">
             <img 
@@ -231,7 +237,7 @@ const ClientPortal = () => {
         </div>
       </header>
 
-      <main className="container mx-auto px-4 sm:px-6 py-6 sm:py-8">
+      <main className="container mx-auto px-4 sm:px-6 py-6 sm:py-8 relative z-10">
         {/* Apple-style Hero Section */}
         <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl mb-12 sm:mb-16">
           {/* Background image overlay */}

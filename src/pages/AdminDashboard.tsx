@@ -11,6 +11,7 @@ import {
   UserCheck
 } from "lucide-react";
 import { BookHiveLayout } from "@/components/BookHiveLayout";
+import { GlassBackground } from "@/components/GlassBackground";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -216,6 +217,7 @@ export default function AdminDashboard() {
       icon: BookOpen,
       color: "text-primary",
       bgColor: "bg-primary/10",
+      glowClass: "glass-glow-primary",
     },
     {
       title: "Total Copies", 
@@ -224,6 +226,7 @@ export default function AdminDashboard() {
       icon: BookCheck,
       color: "text-info",
       bgColor: "bg-info/10",
+      glowClass: "glass-glow-info",
     },
     {
       title: "Active Loans",
@@ -232,6 +235,7 @@ export default function AdminDashboard() {
       icon: Users,
       color: "text-success",
       bgColor: "bg-success/10",
+      glowClass: "glass-glow-success",
     },
     {
       title: "Pending Requests",
@@ -240,6 +244,7 @@ export default function AdminDashboard() {
       icon: Clock,
       color: "text-warning",
       bgColor: "bg-warning/10",
+      glowClass: "glass-glow-warning",
     },
     {
       title: "Overdue Items",
@@ -256,6 +261,7 @@ export default function AdminDashboard() {
       icon: UserCheck,
       color: "text-accent",
       bgColor: "bg-accent/10",
+      glowClass: "glass-glow-success",
     },
   ];
 
@@ -291,7 +297,8 @@ export default function AdminDashboard() {
 
   return (
     <BookHiveLayout>
-      <div className="container mx-auto p-4 sm:p-6 space-y-6">
+      <GlassBackground />
+      <div className="container mx-auto p-4 sm:p-6 space-y-6 relative z-10">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
@@ -331,17 +338,17 @@ export default function AdminDashboard() {
               transition={{ delay: index * 0.1, duration: 0.5 }}
               whileHover={{ scale: 1.03, y: -5 }}
             >
-              <Card className="glass-interactive hover:shadow-glow transition-all duration-300 group">
+              <Card className={`glass-interactive ${stat.glowClass || ''} hover:shadow-glow transition-all duration-300 group`}>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground">
                     {stat.title}
                   </CardTitle>
                   <motion.div 
-                    className={`w-8 h-8 sm:w-10 sm:h-10 rounded-xl ${stat.bgColor} flex items-center justify-center`}
+                    className={`w-8 h-8 sm:w-10 sm:h-10 rounded-xl ${stat.bgColor} flex items-center justify-center shadow-lg backdrop-blur-sm`}
                     whileHover={{ scale: 1.2, rotate: 10 }}
                     transition={{ type: "spring", stiffness: 300 }}
                   >
-                    <stat.icon className={`w-4 h-4 sm:w-5 sm:h-5 ${stat.color}`} />
+                    <stat.icon className={`w-4 h-4 sm:w-5 sm:h-5 ${stat.color} drop-shadow-lg`} />
                   </motion.div>
                 </CardHeader>
                 <CardContent>

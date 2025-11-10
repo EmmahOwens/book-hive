@@ -1,14 +1,22 @@
 import { useState, useEffect } from "react";
-import { BookHiveLayout } from "@/components/BookHiveLayout";
-import { SearchBar } from "@/components/SearchBar";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 import { BookCard } from "@/components/BookCard";
+import { Header } from "@/components/Header";
+import { SearchBar } from "@/components/SearchBar";
+import { LibraryStats } from "@/components/LibraryStats";
+import { CategoryCard } from "@/components/CategoryCard";
 import { BorrowModal } from "@/components/BorrowModal";
+import { BookCardSkeleton } from "@/components/BookCardSkeleton";
+import { BookHiveLayout } from "@/components/BookHiveLayout";
+import { GlassBackground } from "@/components/GlassBackground";
+import { useNotification } from "@/hooks/useNotification";
+import { Database } from "@/integrations/supabase/types";
+import { Book, Users, GraduationCap, Sparkles, Microscope, Palette, Loader2, BookOpen } from "lucide-react";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useRealtimeSubscription } from "@/hooks/useRealtimeSubscription";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
-import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
-import { Loader2, BookOpen } from "lucide-react";
 import { BouncingBookLoader } from "@/components/BouncingBookLoader";
 import { ParticleBackground } from "@/components/ParticleBackground";
 import { AnimatedBlob } from "@/components/AnimatedBlob";
@@ -199,7 +207,8 @@ const Index = () => {
 
   return (
     <BookHiveLayout>
-      <div className="container mx-auto px-6 py-8">
+      <GlassBackground />
+      <div className="container mx-auto px-6 py-8 relative z-10">
         {/* Welcome Hero Section */}
         <div className="relative overflow-hidden rounded-3xl mb-16">
           {/* Animated gradient background */}

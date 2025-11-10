@@ -37,14 +37,19 @@ export const BookCard = ({
   
   return (
     <motion.div
-      whileHover={{ y: -8 }}
+      whileHover={{ y: -8, scale: 1.02 }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
     >
       <Card 
         ref={ref as any}
-        className={`group glass-interactive rounded-2xl overflow-hidden transition-all duration-700 ${
+        className={`group glass-interactive rounded-2xl overflow-hidden transition-all duration-700 relative ${
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
         }`}
+        style={{
+          boxShadow: isAvailable 
+            ? '0 8px 32px rgba(31, 38, 135, 0.15), 0 0 40px rgba(99, 102, 241, 0.2)' 
+            : '0 8px 32px rgba(31, 38, 135, 0.15)',
+        }}
       >
         {/* Cover Image Section */}
         {coverPath && (
@@ -68,7 +73,9 @@ export const BookCard = ({
               whileHover={{ opacity: 1, scale: 1 }}
               className="absolute top-3 right-3"
             >
-              <Badge className={`${isAvailable ? 'bg-success/90' : 'bg-destructive/90'} text-white backdrop-blur-sm`}>
+            <Badge 
+                className={`${isAvailable ? 'bg-success/90' : 'bg-destructive/90'} text-white backdrop-blur-sm shadow-lg ${isAvailable ? 'shadow-success/30' : 'shadow-destructive/30'}`}
+              >
                 {isAvailable ? 'Available' : 'Unavailable'}
               </Badge>
             </motion.div>

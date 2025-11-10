@@ -21,21 +21,25 @@ export const CategoryCard = ({
 }: CategoryCardProps) => {
   return (
     <motion.div
-      whileHover={{ scale: 1.05, y: -5 }}
+      whileHover={{ scale: 1.05, y: -8 }}
       whileTap={{ scale: 0.98 }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
     >
       <Card
         onClick={onClick}
-        className={`${gradient} cursor-pointer border-0 glass-interactive overflow-hidden group`}
+        className={`${gradient} cursor-pointer border-0 glass-interactive overflow-hidden group relative`}
+        style={{
+          boxShadow: '0 8px 32px rgba(31, 38, 135, 0.2), 0 0 40px rgba(255, 255, 255, 0.1)',
+        }}
       >
         <div className="p-6 relative">
           {/* Background decoration */}
-          <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500"></div>
+          <div className="absolute top-0 right-0 w-32 h-32 bg-white/20 rounded-full blur-3xl group-hover:scale-150 group-hover:bg-white/30 transition-all duration-500"></div>
+          <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full blur-2xl group-hover:scale-125 transition-all duration-700"></div>
           
           <div className="relative z-10">
-            <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-              <Icon className="w-6 h-6 text-white" />
+            <div className="w-12 h-12 rounded-xl bg-white/30 backdrop-blur-md flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-lg shadow-white/20">
+              <Icon className="w-6 h-6 text-white drop-shadow-lg" />
             </div>
             
             <h3 className="text-lg font-bold text-white mb-1">{name}</h3>
