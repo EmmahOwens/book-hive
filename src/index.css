@@ -193,12 +193,12 @@
   }
 
   .glass-interactive:hover {
-    background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
     box-shadow: 0 16px 48px 0 rgba(31, 38, 135, 0.25), var(--glass-glow);
     transform: translateY(-4px) scale(1.02);
-    border-color: rgba(255, 255, 255, 0.4);
+    border-color: rgba(255, 255, 255, 0.5);
+    filter: brightness(1.1);
   }
 
   /* Glass with colored glow effects */
