@@ -16,6 +16,7 @@ import AdminOverdue from "./pages/AdminOverdue";
 import AdminActivity from "./pages/AdminActivity";
 import BookDetails from "./pages/BookDetails";
 import NotFound from "./pages/NotFound";
+import BulkImport from "./pages/BulkImport";
 
 const queryClient = new QueryClient();
 
@@ -40,6 +41,7 @@ const App = () => {
               <Route path="/admin/inventory" element={<AdminInventory />} />
               <Route path="/admin/overdue" element={<AdminOverdue />} />
               <Route path="/admin/activity" element={<AdminActivity />} />
+              <Route path="/admin/bulk-import" element={<BulkImport />} />
               {/* Redirect old routes to prevent 404s */}
               <Route path="/index" element={<Navigate to="/client" replace />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
