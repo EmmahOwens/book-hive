@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.56.1";
+import { SMTPClient } from "https://deno.land/x/denomailer@1.6.0/mod.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -88,35 +89,43 @@ serve(async (req) => {
       </div>
     `;
 
-    // Send email using Resend
-    console.log('Sending loan approval email:', { 
+    // Send email using SMTP
+    console.log('Sending loan approval email via SMTP:', { 
       to: borrowerEmail, 
       subject: emailSubject,
       borrowRequestId 
     });
-    
-    const resendApiKey = Deno.env.get('RESEND_API_KEY');
-    
-    const emailResult = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${resendApiKey}`
+
+    // Initialize SMTP client
+    const client = new SMTPClient({
+      connection: {
+        hostname: Deno.env.get('SMTP_HOSTNAME') ?? '',
+        port: Number(Deno.env.get('SMTP_PORT')) || 587,
+        tls: true,
+        auth: {
+          username: Deno.env.get('SMTP_USERNAME') ?? '',
+          password: Deno.env.get('SMTP_PASSWORD') ?? '',
+        },
       },
-      body: JSON.stringify({
-        from: 'Book Hive <onboarding@resend.dev>',
-        to: [borrowerEmail],
-        subject: emailSubject,
-        html: emailHtml
-      })
     });
-    
-    const emailData = await emailResult.json();
-    
-    if (!emailResult.ok) {
-      console.error('Failed to send email:', emailData);
-      throw new Error(`Email sending failed: ${emailData.message || 'Unknown error'}`);
-    }
+
+    // Send email using SMTP
+    await client.send({
+      from: Deno.env.get('SMTP_FROM_EMAIL') ?? 'noreply@library.com',
+      to: borrowerEmail,
+      subject: emailSubject,
+      content: `Loan approved for ${bookTitle}`,
+      html: emailHtml,
+    });
+
+    await client.close();
+
+    const emailData = {
+      id: `approval_${Date.now()}`,
+      success: true
+    };
+
+    console.log('Loan approval email sent successfully via SMTP');
 
     // Log the email activity
     await supabase.from('activity_log').insert({

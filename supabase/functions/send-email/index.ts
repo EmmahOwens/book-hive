@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.56.1";
+import { SMTPClient } from "https://deno.land/x/denomailer@1.6.0/mod.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -29,27 +30,38 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    // Simulate email sending (in production, use SMTP service like Resend, SendGrid, etc.)
-    console.log('Sending email:', { to, subject, queueId });
-    
-    // For demo purposes, we'll just log the email and mark as sent
-    // In production, you would integrate with an actual email service:
-    /*
-    const emailService = new Resend(Deno.env.get('RESEND_API_KEY'));
-    const emailResult = await emailService.emails.send({
-      from: 'noreply@bookhive.library',
+    console.log('Sending email via SMTP:', { to, subject, queueId });
+
+    // Initialize SMTP client
+    const client = new SMTPClient({
+      connection: {
+        hostname: Deno.env.get('SMTP_HOSTNAME') ?? '',
+        port: Number(Deno.env.get('SMTP_PORT')) || 587,
+        tls: true,
+        auth: {
+          username: Deno.env.get('SMTP_USERNAME') ?? '',
+          password: Deno.env.get('SMTP_PASSWORD') ?? '',
+        },
+      },
+    });
+
+    // Send email using SMTP
+    await client.send({
+      from: Deno.env.get('SMTP_FROM_EMAIL') ?? 'noreply@library.com',
       to: to,
       subject: subject,
+      content: text || 'Email notification',
       html: html,
-      text: text,
     });
-    */
 
-    // For now, simulate successful sending
+    await client.close();
+
     const emailResult = {
       id: `email_${Date.now()}`,
       success: true
     };
+
+    console.log('Email sent successfully via SMTP to:', to);
 
     // Update notification queue if this was queued
     if (queueId) {
