@@ -26,10 +26,18 @@ serve(async (req) => {
 
     console.log(`[Loan Management] Processing ${action} for loan ${loanId}`);
 
-    // Fetch the loan
+    // Fetch the loan with book details
     const { data: loan, error: fetchError } = await supabase
       .from('loans')
-      .select('*, copy_id')
+      .select(`
+        *,
+        copy_id,
+        copies!inner(
+          books!inner(
+            title
+          )
+        )
+      `)
       .eq('id', loanId)
       .single();
 
@@ -74,6 +82,22 @@ serve(async (req) => {
         },
       });
 
+      // Send return confirmation email
+      try {
+        const bookTitle = loan.copies?.books?.title || 'Unknown';
+        await supabase.functions.invoke('send-return-confirmation-email', {
+          body: {
+            borrowerName: loan.borrower_name,
+            borrowerEmail: loan.borrower_email,
+            bookTitle: bookTitle,
+            returnDate: new Date().toISOString().split('T')[0],
+          },
+        });
+        console.log(`[Loan Management] Return confirmation email sent for loan ${loanId}`);
+      } catch (emailError: any) {
+        console.error(`[Loan Management] Failed to send return email: ${emailError.message}`);
+      }
+
       console.log(`[Loan Management] Successfully returned loan ${loanId}`);
       
     } else if (action === 'renew') {
@@ -110,6 +134,24 @@ serve(async (req) => {
           renewal_count: loan.renewal_count + 1,
         },
       });
+
+      // Send renewal confirmation email
+      try {
+        const bookTitle = loan.copies?.books?.title || 'Unknown';
+        await supabase.functions.invoke('send-renewal-confirmation-email', {
+          body: {
+            borrowerName: loan.borrower_name,
+            borrowerEmail: loan.borrower_email,
+            bookTitle: bookTitle,
+            oldDueDate: loan.due_date,
+            newDueDate: newDueDate.toISOString().split('T')[0],
+            renewalCount: loan.renewal_count + 1,
+          },
+        });
+        console.log(`[Loan Management] Renewal confirmation email sent for loan ${loanId}`);
+      } catch (emailError: any) {
+        console.error(`[Loan Management] Failed to send renewal email: ${emailError.message}`);
+      }
 
       console.log(`[Loan Management] Successfully renewed loan ${loanId}`);
     }

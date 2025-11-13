@@ -18,6 +18,12 @@ verify_jwt = false
 [functions.send-loan-rejection-email]
 verify_jwt = false
 
+[functions.send-return-confirmation-email]
+verify_jwt = false
+
+[functions.send-renewal-confirmation-email]
+verify_jwt = false
+
 [functions.admin-manage-loan]
 verify_jwt = false
 
